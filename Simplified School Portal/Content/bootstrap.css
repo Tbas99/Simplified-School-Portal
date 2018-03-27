@@ -305,6 +305,15 @@ table {
           box-sizing: border-box;
 }
 
+/* Custom CSS */
+.cliente {
+    margin-top: 10px;
+    border: #cdcdcd medium solid;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+}
+
 html {
   font-size: 62.5%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -459,6 +468,11 @@ cite {
 
 .text-center {
   text-align: center;
+}
+
+/*custom css*/
+.textcentermargin {
+    margin: 20px;
 }
 
 h1,

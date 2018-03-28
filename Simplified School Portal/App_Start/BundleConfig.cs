@@ -26,6 +26,9 @@ namespace Simplified_School_Portal
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+            // Add bundles for login page layout
+            bundles.Add(new StyleBundle("~/Content/logincss").Include("~/Content/Loginpage.css"));
         }
     }
 }

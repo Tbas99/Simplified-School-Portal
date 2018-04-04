@@ -20,6 +20,8 @@
  */
 
 /*! normalize.css v2.1.0 | MIT License | git.io/normalize */
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,600);
+
 
 article,
 aside,
@@ -1654,15 +1656,15 @@ fieldset {
 }
 
 legend {
-  display: block;
-  width: 100%;
-  padding: 0;
-  margin-bottom: 20px;
-  font-size: 21px;
-  line-height: inherit;
-  color: #333333;
-  border: 0;
-  border-bottom: 1px solid #e5e5e5;
+    display: block;
+    width: 100%;
+    padding: 0;
+    margin-bottom: 20px;
+    font-size: 21px;
+    line-height: inherit;
+    color: #5a5a5a; /* Edited value */
+    border: 0;
+    border-bottom: 1px solid #e5e5e5;
 }
 
 label {
@@ -1737,7 +1739,7 @@ input[type="number"]::-webkit-inner-spin-button {
   padding: 6px 12px;
   font-size: 14px;
   line-height: 1.428571429;
-  color: #555555;
+  color: #ffffff;
   vertical-align: middle;
   background-color: #ffffff;
   border: 1px solid #cccccc;
@@ -5564,7 +5566,7 @@ a.list-group-item:focus {
   min-height: 20px;
   padding: 19px;
   margin-bottom: 20px;
-  background-color: #f5f5f5;
+  background-color: #ffffff;
   border: 1px solid #e3e3e3;
   border-radius: 4px;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
@@ -6842,3 +6844,134 @@ td.visible-print {
     background-color: #141111;
 }
 
+.formColour {
+    color: #5a5a5a;
+}
+
+/* Form css for flashy effects */
+
+.form-control {
+    background: transparent;
+}
+
+form {
+    width: 320px;
+    margin: 20px;
+}
+
+form > div {
+    position: relative;
+    overflow: hidden;
+}
+
+form input, form textarea {
+    width: 100%;
+    border: 2px solid gray;
+    background: none;
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    padding: 8px 12px;
+    outline: 0;
+}
+
+form input:valid, form textarea:valid {
+    background: white;
+    color: #555555;
+}
+
+form input:focus, form textarea:focus {
+    border-color: #357EBD;
+}
+
+form input:focus + label, form textarea:focus + label {
+    background: #357EBD;
+    color: white;
+    font-size: 70%;
+    padding: 1px 6px;
+    z-index: 2;
+    text-transform: uppercase;
+}
+
+form label {
+    -webkit-transition: background 0.2s, color 0.2s, top 0.2s, bottom 0.2s, right 0.2s, left 0.2s;
+    transition: background 0.2s, color 0.2s, top 0.2s, bottom 0.2s, right 0.2s, left 0.2s;
+    position: absolute;
+    color: #999;
+    padding: 7px 6px;
+    font-weight: normal;
+}
+
+form textarea {
+    display: block;
+    resize: vertical;
+}
+
+form.go-bottom input, form.go-bottom textarea {
+    padding: 12px 12px 12px 12px;
+}
+
+form.go-bottom label {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+form.go-bottom input:focus, form.go-bottom textarea:focus {
+    padding: 4px 6px 20px 6px;
+}
+
+form.go-bottom input:focus + label, form.go-bottom textarea:focus + label {
+    top: 100%;
+    margin-top: -16px;
+}
+
+form.go-right label {
+    border-radius: 0 5px 5px 0;
+    height: 100%;
+    top: 0;
+    right: 100%;
+    width: 100%;
+    margin-right: -100%;
+}
+
+form.go-right input:focus + label, form.go-right textarea:focus + label {
+    right: 0;
+    margin-right: 0;
+    width: 40%;
+    padding-top: 5px;
+}
+
+.formTweaks {
+    border-width: 2px;
+    border-color: #5a5a5a;
+    border-style: solid;
+    background-color: #5a5a5a;
+    box-shadow: 0px 0px 1px 3px dimgrey;
+    color: #ffffff;
+}
+
+.cleanPadding {
+    padding: 0;
+}
+
+/* Equal height columns */
+.equalHeight {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.equalHeight > [class*='col-'] {
+    display: flex;
+    flex-direction: column;
+}
+
+/* For the cliente class */
+.fullHeight {
+    height: 100%;
+}

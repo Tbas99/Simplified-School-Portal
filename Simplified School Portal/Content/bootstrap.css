@@ -6829,3 +6829,16 @@ td.visible-print {
   }
 }
 
+/* Custom site CSS continued.. */
+.hoverEffect {
+    /* Standard syntax */
+    transition-property: all;
+    transition-duration: 1s;
+    transition-timing-function: linear;
+}
+
+.hoverEffect:hover {
+    color: #FFFFFF;
+    background-color: #141111;
+}
+

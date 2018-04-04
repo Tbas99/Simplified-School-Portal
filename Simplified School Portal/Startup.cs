@@ -10,5 +10,6 @@ namespace Simplified_School_Portal
         {
             ConfigureAuth(app);
         }
+
     }
 }

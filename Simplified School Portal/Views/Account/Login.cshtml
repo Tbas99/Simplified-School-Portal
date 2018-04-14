@@ -4,6 +4,9 @@
     ViewBag.Title = "Log in";
 }
 
+@Styles.Render("~/Content/logincss")
+
+@*
 <h2>@ViewBag.Title.</h2>
 <div class="row">
     <div class="col-md-8">
@@ -47,7 +50,7 @@
                 @* Enable this once you have account confirmation enabled for password reset functionality
                     <p>
                         @Html.ActionLink("Forgot your password?", "ForgotPassword")
-                    </p>*@
+                    </p>
             }
         </section>
     </div>
@@ -55,6 +58,34 @@
         <section id="socialLoginForm">
             @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
         </section>
+    </div>
+</div>
+*@
+
+<div class="container">
+    <div class="wrapper">
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-signin", role = "form", name = "Login_Form" }))
+        {
+
+            @Html.AntiForgeryToken()
+            <h3 class="form-signin-heading">@ViewBag.Title</h3>
+            <hr class="colorgraph"><br>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @type = "email", @name = "Username", @placeholder = "Email", @required = "required" })
+                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control", @type = "password", @name = "Password", @placeholder = "Password", @required = "required" })
+                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-default btn-block" value="Log in">Submit</button>
+            </div>
+        }
     </div>
 </div>
 

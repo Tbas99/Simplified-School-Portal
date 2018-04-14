@@ -1,0 +1,18 @@
+﻿@using Microsoft.AspNet.Identity
+
+<ul class="nav navbar-nav">
+    <li class="hoverEffect">@Html.ActionLink("Overview", "Overview", "BeheerServices")</li>
+    <li class="hoverEffect">@Html.ActionLink("Create a new service", "NewService", "BeheerServices")</li>
+    <li class="hoverEffect">@Html.ActionLink("Statistics", "Statistics", "BeheerServices")</li>
+</ul>
+
+@using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right cleanMargin" }))
+{
+    @Html.AntiForgeryToken()
+    <ul class="nav navbar-nav navbar-right">
+        <li class="hoverEffect">
+            @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+        </li>
+        <li class="hoverEffect"><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+    </ul>
+}

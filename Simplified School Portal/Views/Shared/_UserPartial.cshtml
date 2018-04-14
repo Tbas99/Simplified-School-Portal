@@ -1,0 +1,33 @@
+﻿@using Microsoft.AspNet.Identity
+
+<ul class="nav navbar-nav">
+    <li class="hoverEffect">@Html.ActionLink("Studentenplein", "Studentenplein", "StandardServices")</li>
+    <li class="hoverEffect">@Html.ActionLink("Canvas", "Canvas", "StandardServices")</li>
+    <li class="hoverEffect">@Html.ActionLink("Lesrooster", "Lesrooster", "StandardServices")</li>
+    <li class="dropdown hoverEffect">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="">
+            Meer
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li>@Html.ActionLink("Request a service", "ServiceRequest", "StandardServices")</li>
+            <li>@Html.ActionLink("About", "About", "Home")</li>
+            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+            <li>@Html.ActionLink("Beheerders", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+        </ul>
+    </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+    <li class="hoverEffect"><a href="">Log-in for Students</a></li>
+    @if (Request.IsAuthenticated)
+    {
+        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right cleanMargin" }))
+        {
+            @Html.AntiForgeryToken()
+            <li>
+                @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+            </li>
+            <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+        }
+    }
+</ul>

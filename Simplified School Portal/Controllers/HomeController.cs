@@ -13,6 +13,8 @@ namespace Simplified_School_Portal.Controllers
 {
     public class HomeController : Controller
     {
+        private SSPDatabaseEntities db = new SSPDatabaseEntities();
+
         public ActionResult Index()
         {
             return View();
@@ -56,6 +58,18 @@ namespace Simplified_School_Portal.Controllers
                 tEmail.Start();
             }
 
+            // Collect and fill database properties
+            Info_request request = new Info_request();
+            request.Name = m.Name;
+            request.Request_user = m.Name;
+            request.Request_date = DateTime.Now;
+            request.Description = m.Description;
+
+            // Finally save it to the database
+            db.Info_request.Add(request);
+            db.SaveChanges();
+            
+
             // Finalization of the message
             ViewBag.Message = "Message Succesfully Send! Expect an reply within a few workdays.";
             ModelState.Clear();
@@ -82,9 +96,12 @@ namespace Simplified_School_Portal.Controllers
                         {
                             smtpClient.Send(mail);
                         }
+                    }
+                    catch(Exception e)
+                    {
+                        // Error handle the failed message
 
                     }
-
                     finally
                     {
                         //dispose the client

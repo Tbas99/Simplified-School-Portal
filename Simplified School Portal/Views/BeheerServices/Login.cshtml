@@ -1,5 +1,8 @@
-﻿@{
+﻿@using Simplified_School_Portal.Models
+@model LoginViewModel
+@{
     Layout = null;
+    ViewBag.Title = "Please sign in!";
 }
 
 <!DOCTYPE html>
@@ -7,37 +10,40 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title - Simplified School Portal</title>
+    <title>Beheerders log-in - Simplified School Portal</title>
     @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/logincss")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
     <div class="container">
-        <div class="col-sm-6 col-sm-offset-3">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Please sign in</h3>
+        <div class="wrapper">
+            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-signin", role = "form", name = "Login_Form" }))
+            {
+
+                @Html.AntiForgeryToken()
+                <h3 class="form-signin-heading">@ViewBag.Title</h3>
+                <hr class="colorgraph"><br>
+
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @type = "email", @name = "Username", @placeholder = "Email", @required = "required" })
                 </div>
-                <div class="panel-body">
-                    <form accept-charset="UTF-8" role="form">
-                        <fieldset>
-                            <div class="form-group">
-                                <input class="form-control" placeholder="E-mail" name="email" type="text">
-                            </div>
-                            <div class="form-group">
-                                <input class="form-control" placeholder="Password" name="password" type="password" value="">
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input name="remember" type="checkbox" value="Remember Me"> Remember Me
-                                </label>
-                            </div>
-                            <input class="btn btn-lg btn-success btn-block" type="submit" value="Login">
-                        </fieldset>
-                    </form>
+
+                <div class="form-group">
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", @type = "password", @name = "Password", @placeholder = "Password", @required = "required" })
                 </div>
-            </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-default btn-block" value="Contact">Submit</button>
+                </div>
+            }
         </div>
     </div>
 </body>
 </html>
+
+<!--
+    Admin user for the site:
+    Email: admin@fhict.nl
+    Password: Fhictportalmanager123!
+-->

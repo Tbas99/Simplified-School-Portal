@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Simplified_School_Portal.Models.Info_request>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Test authorisatie-proces.</h2>
+<div class="row">
+    <div class="col-md-5">
+        <div class="row text-center filterBar">
+            <div class="btn-group">
+                <button class="btn btn-primary">filter1</button>
+                <button class="btn btn-primary">filter2</button>
+                <button class="btn btn-primary">filter3</button>
+                <button class="btn btn-primary">filter4</button>
+                <button class="btn btn-primary">filter5</button>
+                <button class="btn btn-primary">filter6</button>
+            </div>
+        </div>
+        <div class="row filterBar">
+            <div class="col-md-10 col-md-offset-1 text-left">
+                @foreach (var item in Model)
+                {
+                    // Create mark-up for text-baloons.
+                    System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                    sb.AppendFormat("Info request from user: {0}", item.Request_user);
+                    sb.Append("<br>");
+                    sb.AppendFormat("Request created on: {0}", item.Request_date.ToShortDateString());
+                    sb.Append("<br>");
+                    sb.Append("<br>");
+                    sb.AppendFormat("Subject: {0}", item.Name);
+                    sb.Append("<br>");
+                    sb.AppendFormat("Message: {0}", item.Description);
+                    var msg = new HtmlString(sb.ToString());
+                    <div class="pop-message">
+                        @Html.Raw(msg)
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Spacer -->
+    <div class="col-md-2">
+
+    </div>
+    <!-- Spacer -->
+
+    <div class="col-md-5">
+        <p>test</p>
+    </div>
+</div>

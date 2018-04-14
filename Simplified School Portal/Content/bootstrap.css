@@ -314,6 +314,7 @@ table {
     border-radius: 10px;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 html {
@@ -449,7 +450,7 @@ cite {
 }
 
 .text-danger {
-  color: #b94a48;
+  color: #ffa19f;
 }
 
 .text-success {
@@ -4517,8 +4518,8 @@ textarea.input-group-sm > .input-group-btn > .btn {
 }
 
 .navbar-inverse {
-  background-color: #222222;
-  border-color: #080808;
+  /*background-color: #222222; old colour */
+  background-color: #2a2828;
 }
 
 .navbar-inverse .navbar-brand {
@@ -6833,7 +6834,6 @@ td.visible-print {
 
 /* Custom site CSS continued.. */
 .hoverEffect {
-    /* Standard syntax */
     transition-property: all;
     transition-duration: 1s;
     transition-timing-function: linear;
@@ -6842,6 +6842,18 @@ td.visible-print {
 .hoverEffect:hover {
     color: #FFFFFF;
     background-color: #141111;
+}
+
+.frontpageHoverEffect {
+    transition-property: all;
+    transition-duration: 1s;
+    transition-timing-function: linear;
+}
+
+.frontpageHoverEffect:hover {
+    color: #fff;
+    background-color: #817f7f;
+    border-color: #817f7f;
 }
 
 .formColour {
@@ -6957,6 +6969,10 @@ form.go-right input:focus + label, form.go-right textarea:focus + label {
     padding: 0;
 }
 
+.cleanMargin {
+    margin: 0;
+}
+
 /* Equal height columns */
 .equalHeight {
     display: -webkit-box;
@@ -6974,4 +6990,26 @@ form.go-right input:focus + label, form.go-right textarea:focus + label {
 /* For the cliente class */
 .fullHeight {
     height: 100%;
+}
+
+/* filter bar css */
+.filterBar {
+    padding: 10px;
+    border-width: 3px;
+    border-color: #38333E;
+    border-style: solid;
+    background-color: #312F33;
+}
+
+/* pop message overview */
+.pop-message {
+    border-width: 2px;
+    border-style: solid;
+    border-color: #e0dbdb;
+    background-color: #e0dbdb;
+    border-radius: 3px 3px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    color: #3e3e3e;
 }

@@ -7012,4 +7012,10 @@ form.go-right input:focus + label, form.go-right textarea:focus + label {
     margin-bottom: 10px;
     padding: 10px;
     color: #3e3e3e;
+    overflow: auto;
+}
+
+#filter {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
 }

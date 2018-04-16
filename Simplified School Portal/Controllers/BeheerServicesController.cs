@@ -24,9 +24,19 @@ namespace Simplified_School_Portal.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public ActionResult Overview()
+        public ActionResult Overview(string searchString)
         {
-            return View(db.Info_request.ToList());
+            var info_requests = from m in db.Info_request select m;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                info_requests = info_requests.Where(s => s.Request_user.Contains(searchString));
+                return View(info_requests);
+            }
+            else
+            {
+                return View(db.Info_request.ToList());
+            }
         }
 
         [Authorize(Roles = "Admin")]

@@ -24,17 +24,32 @@ namespace Simplified_School_Portal.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public ActionResult Overview(string searchString)
+        public ActionResult Overview(string searchString, string searchDay, string searchWeek)
         {
             var info_requests = from m in db.Info_request select m;
 
             if (!String.IsNullOrEmpty(searchString))
             {
                 info_requests = info_requests.Where(s => s.Request_user.Contains(searchString));
+                ModelState.Clear();
+                return View(info_requests);
+            }
+            else if (!String.IsNullOrEmpty(searchDay))
+            {
+                DateTime today = DateTime.Parse(searchDay);
+                info_requests = info_requests.Where(s => s.Request_date == today);
+                ModelState.Clear();
+                return View(info_requests);
+            }
+            else if (!String.IsNullOrEmpty(searchWeek)) {
+                DateTime lastweek = DateTime.Parse(searchWeek);
+                info_requests = info_requests.Where(s => s.Request_date >= lastweek && s.Request_date <= DateTime.Now);
+                ModelState.Clear();
                 return View(info_requests);
             }
             else
             {
+                ModelState.Clear();
                 return View(db.Info_request.ToList());
             }
         }

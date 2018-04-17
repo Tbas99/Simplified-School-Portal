@@ -7015,7 +7015,15 @@ form.go-right input:focus + label, form.go-right textarea:focus + label {
     overflow: auto;
 }
 
-#filter {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
+.addScrollbar {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.fullWidth {
+    width: 100%;
+}
+
+.halfWidth {
+    width: 50%;
 }

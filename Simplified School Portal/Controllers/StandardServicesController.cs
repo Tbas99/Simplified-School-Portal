@@ -11,6 +11,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Microsoft.AspNet;
+using Microsoft.IdentityModel;
+using System.IdentityModel.Claims;
+using System.IdentityModel;
+using IdentityServer3.Core.Models;
+using System.Security.Claims;
+using Microsoft.AspNet.Identity;
 
 namespace Simplified_School_Portal.Controllers
 {
@@ -19,7 +25,12 @@ namespace Simplified_School_Portal.Controllers
         private string host = "https://identity.fhict.nl/connect/authorize";
 
         // GET: StandardServices
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
+        {            
+            return View();
+        }
+
+        public async Task<ActionResult> Studentenplein()
         {
             ViewData["Title"] = "Home page";
 
@@ -27,7 +38,7 @@ namespace Simplified_School_Portal.Controllers
             var authToken = GetAuthTokenFromSession();
 
             // If the authorisation process returns a code, exchange it for an access token
-            string currentUrl = Request.ApplicationPath;
+            string currentUrl = Request.Url.ToString();
 
             if (currentUrl.Contains("code"))
             {
@@ -35,10 +46,6 @@ namespace Simplified_School_Portal.Controllers
                 {
                     var code = Request.QueryString["code"];
                     authToken = await GetTokenFromCode(code);
-                    ViewData["AccessToken"] = authToken;
-
-                    var user = GetUserInfo(authToken);
-                    ViewData["Username"] = user.Result["name"].ToString();
                 }
                 catch (Exception ex)
                 {
@@ -50,22 +57,31 @@ namespace Simplified_School_Portal.Controllers
             // If the user isn't connected, redirect to the authorisation page
             if (string.IsNullOrEmpty(authToken))
             {
-                return Redirect(host + "?client_id=i387766-simplified&scope=fhict fhict_personal openid profile email roles&response_type=code&redirect_uri=" + HttpUtility.HtmlEncode("http://i387766.venus.fhict.nl/StandardServices/Studentenplein"));
+                return Redirect(host + "?client_id=i387766-simplified&scope=fhict fhict_personal openid profile email roles&response_type=code&redirect_uri=" + HttpUtility.HtmlEncode("http://localhost:54680/StandardServices/Studentenplein"));
+            }
+            else
+            {
+                ViewData["token"] = GetAuthTokenFromSession();
             }
 
             return View();
         }
 
-        public ActionResult Studentenplein()
-        {
-            return View();
-        }
-
+        [Authorize]
         public ActionResult Canvas()
         {
+            var user = User as ClaimsPrincipal;
+            var token = user.FindFirst("access_token");
+
+            if (token != null)
+            {
+                ViewData["access_token"] = token.Value;
+            }
+
             return View();
         }
 
+        [Authorize]
         public ActionResult Lesrooster()
         {
             return View();
@@ -76,6 +92,69 @@ namespace Simplified_School_Portal.Controllers
             return View();
         }
 
+        public async Task<ActionResult> AuthorizationCodeCallback()
+        {
+            // received authorization code from authorization server
+            string[] codes = Request.Params.GetValues("code");
+            var authorizationCode = "";
+            if (codes.Length > 0)
+                authorizationCode = codes[0];
+
+            // exchange authorization code at authorization server for an access and refresh token
+            Dictionary<string, string> post = null;
+            post = new Dictionary<string, string>
+            {
+                {"grant_type", "authorization_code"},
+                {"code", authorizationCode},
+                {"redirect_uri", "_redirectUrl"},
+                {"client_id", "i387766-simplified"},
+                {"client_secret", "Qfl45x6l38lOdiaMZE14l82RmIc3D3WG5IptSjJG"}
+            };
+
+            var client = new HttpClient();
+            var postContent = new FormUrlEncodedContent(post);
+            var response = await client.PostAsync("https://identity.fhict.nl/connect/token", postContent);
+            var content = await response.Content.ReadAsStringAsync();
+
+            // received tokens from authorization server
+            var json = JObject.Parse(content);
+            string _accessToken = json["access_token"].ToString();
+            string _authorizationScheme = json["token_type"].ToString();
+            string _expiresIn = json["expires_in"].ToString();
+            if (json["refresh_token"] != null)
+            {
+                string _refreshToken = json["refresh_token"].ToString();
+            }
+
+            //SignIn with Token, SignOut and create new identity for SignIn
+            Request.Headers.Add("Authorization", _authorizationScheme + " " + _accessToken);
+            var ctx = Request.GetOwinContext();
+            var authenticateResult = await ctx.Authentication.AuthenticateAsync(DefaultAuthenticationTypes.ExternalBearer);
+            ctx.Authentication.SignOut(DefaultAuthenticationTypes.ExternalBearer);
+            var applicationCookieIdentity = new ClaimsIdentity(authenticateResult.Identity.Claims, DefaultAuthenticationTypes.ApplicationCookie);
+            ctx.Authentication.SignIn(applicationCookieIdentity);
+
+            var ctxUser = ctx.Authentication.User;
+            var user = Request.RequestContext.HttpContext.User;
+
+            //redirect back to the view which required authentication
+            string decodedUrl = "";
+            if (!string.IsNullOrEmpty("_returnUrl"))
+            {
+                decodedUrl = Server.UrlDecode("_returnUrl");
+            }
+
+            if (Url.IsLocalUrl(decodedUrl))
+            {
+                return Redirect(decodedUrl);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+
         // Code that transforms the given "code" into an access token
         private async Task<string> GetTokenFromCode(string code)
         {
@@ -85,7 +164,7 @@ namespace Simplified_School_Portal.Controllers
             {
                 new KeyValuePair<string, string>("grant_type", "authorization_code"),
                 new KeyValuePair<string, string>("code", code),
-                new KeyValuePair<string, string>("redirect_uri", "http://i387766.venus.fhict.nl/StandardServices/Studentenplein"),
+                new KeyValuePair<string, string>("redirect_uri", "http://localhost:54680/StandardServices/Studentenplein"),
                 new KeyValuePair<string, string>("client_id", "i387766-simplified"),
                 new KeyValuePair<string, string>("client_secret", "Qfl45x6l38lOdiaMZE14l82RmIc3D3WG5IptSjJG")
             });
@@ -98,6 +177,15 @@ namespace Simplified_School_Portal.Controllers
             // The actual POST request
             var response = await client.PostAsync("https://identity.fhict.nl/connect/token", content);
             var token = JObject.Parse(await response.Content.ReadAsStringAsync())["access_token"].ToString();
+
+            // Store the token in a cookie
+            var expirationTime = JObject.Parse(await response.Content.ReadAsStringAsync())["expires_in"].ToString();
+
+            HttpCookie cookie = new HttpCookie("token");
+            cookie.Value = token.ToString();
+            //cookie.Expires = DateTime.Now.AddMinutes(Double.Parse(expirationTime));
+
+            Response.Cookies.Add(cookie);
 
             // Finally return the token
             return token;
@@ -118,7 +206,17 @@ namespace Simplified_School_Portal.Controllers
         private string GetAuthTokenFromSession()
         {
             //TODO: Session handeling
-            return "";
+
+            HttpCookie myCookie = Response.Cookies["token"];
+
+            if (myCookie.Value != null)
+            {
+                return myCookie.Value;
+            }
+            else
+            {
+                return "";
+            }
         }
     }
 }

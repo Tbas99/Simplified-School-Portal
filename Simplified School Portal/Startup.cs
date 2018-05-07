@@ -9,7 +9,15 @@ using System.Data.Entity.Migrations;
 using Simplified_School_Portal.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.Owin.Host.SystemWeb;
 using System.IdentityModel.Tokens.Jwt;
+using IdentityServer3.Core;
+using IdentityServer3.Core.Configuration;
+using IdentityModel.Client;
+using IdentityServer3.Core.Models;
+using IdentityServer3.Core.Services.InMemory;
+using Microsoft.Owin.Security.OAuth;
+using Microsoft.Owin.Security;
 
 [assembly: OwinStartupAttribute(typeof(Simplified_School_Portal.Startup))]
 namespace Simplified_School_Portal
@@ -21,7 +29,60 @@ namespace Simplified_School_Portal
             ConfigureAuth(app);
             createRolesandUsers();
 
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
+                AuthenticationType = "Cookies",
+                CookieManager = new SystemWebChunkingCookieManager()           
+            });
+
+            app.UseOpenIdConnectAuthentication(new OpenIdConnectAuthenticationOptions
+            {
+                ClientId = "i387766-simplified",
+                Authority = "https://identity.fhict.nl/connect/authorize",
+                RedirectUri = "http://localhost:54680/",
+                ResponseType = "code",
+                Scope = "fhict fhict_personal openid profile email roles",
+
+                UseTokenLifetime = true,
+                SignInAsAuthenticationType = "Cookies"
+            });
+
             /*
+            app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions()
+            {
+                AuthenticationType = DefaultAuthenticationTypes.ExternalBearer,
+                AuthenticationMode = AuthenticationMode.Passive
+            });
+            */
+
+            /*
+            var options = new IdentityServerOptions
+            {
+                Factory = new IdentityServerServiceFactory()
+                            .UseInMemoryClients(Clients.Get())
+                            .UseInMemoryScopes(Scopes.Get())
+                            .UseInMemoryUsers(new List<InMemoryUser>()),
+
+                RequireSsl = false
+            };
+
+            app.UseIdentityServer(options);
+
+            app.Map("/identity", idsrvApp =>
+            {
+                idsrvApp.UseIdentityServer(new IdentityServerOptions
+                {
+                    SiteName = "Simplified School Portal",
+
+                    Factory = new IdentityServerServiceFactory()
+                                .UseInMemoryUsers(Users.Get())
+                                .UseInMemoryClients(Clients.Get())
+                                .UseInMemoryScopes(StandardScopes.All),
+
+                    RequireSsl = false
+                });
+            });
+
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = "Cookies"
@@ -31,14 +92,17 @@ namespace Simplified_School_Portal
             {
                 ClientId = "i387766-simplified",
                 Authority = "https://identity.fhict.nl/connect/authorize",
-                RedirectUri = "http://i387766.venus.fhict.nl/StandardServices/Studentenplein", 
-                ResponseType = "id_token", 
-                Scope = "fhict, fhict_personal, openid, profile, email, roles", 
+                RedirectUri = "http://localhost:54680/StandardServices/Studentenplein",
+                ResponseType = "id_token",
+                Scope = "fhict, fhict_personal, openid, profile, email, roles",
 
-                UseTokenLifetime = false, 
+                UseTokenLifetime = false,
                 SignInAsAuthenticationType = "Cookies"
-            });
-            */
+
+                
+        });
+
+        */
         }
 
         public void createRolesandUsers()

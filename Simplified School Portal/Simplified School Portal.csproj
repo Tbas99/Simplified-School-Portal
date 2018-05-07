@@ -237,6 +237,7 @@
     <Compile Include="Models\API_package.cs">
       <DependentUpon>StoreDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Course.cs" />
     <Compile Include="Models\Feature_request.cs">
       <DependentUpon>StoreDB.tt</DependentUpon>
     </Compile>

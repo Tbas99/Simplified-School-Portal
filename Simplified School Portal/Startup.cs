@@ -32,20 +32,22 @@ namespace Simplified_School_Portal
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = "Cookies",
-                CookieManager = new SystemWebChunkingCookieManager()           
+                //CookieManager = new SystemWebChunkingCookieManager()           
             });
 
+            /*
             app.UseOpenIdConnectAuthentication(new OpenIdConnectAuthenticationOptions
             {
                 ClientId = "i387766-simplified",
                 Authority = "https://identity.fhict.nl/connect/authorize",
                 RedirectUri = "http://localhost:54680/",
-                ResponseType = "code",
+                ResponseType = "token",
                 Scope = "fhict fhict_personal openid profile email roles",
 
                 UseTokenLifetime = true,
                 SignInAsAuthenticationType = "Cookies"
             });
+            */
 
             /*
             app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions()

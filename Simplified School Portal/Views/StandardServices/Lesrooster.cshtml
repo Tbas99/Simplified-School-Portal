@@ -1,8 +1,60 @@
-﻿@{
-    ViewBag.Title = "CallApi";
+﻿@model IEnumerable<Simplified_School_Portal.Models.Course>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@helper dayView(string day)
+{
+        <h2>@day</h2>
+        <table class="table table-hover table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">Tijdstip</th>
+                    <th scope="col">Vak</th>
+                    <th scope="col">Klaslokaal</th>
+                    <th scope="col">Docent</th>
+                </tr>
+            </thead>
+
+            @foreach (var course in Model)
+            {
+            //DateTime date = DateTime.Parse(course.startDate);
+            DateTime date = DateTime.ParseExact(course.startDate, "MM/dd/yyyy", new System.Globalization.CultureInfo("en-US", false));
+            string weekday = date.ToString("dddd");
+
+            if (weekday != day)
+            {
+                continue;
+            }
+            <tr>
+                <th scope="row">
+                    @course.startTime - @course.endTime
+                </th>
+                <td>
+                    @course.subject
+                    @course.description
+                </td>
+                <td>
+                    @course.room
+                </td>
+                <td>
+                    @course.teacher
+                </td>
+            </tr>
+            }
+
+        </table>
 }
 
-<h2>Api Result</h2>
+<h2>@ViewData["title"]</h2>
 
-<pre>@ViewBag.Json</pre>
-
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            @dayView("Monday")
+            @dayView("Tuesday")
+            @dayView("Wednesday")
+            @dayView("Thursday")
+            @dayView("Friday")
+        </div>
+    </div>
+</div>

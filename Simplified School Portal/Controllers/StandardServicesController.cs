@@ -28,7 +28,18 @@ namespace Simplified_School_Portal.Controllers
 
         // GET: StandardServices
         public ActionResult Index()
-        {            
+        {
+            //var client = new HttpClient();
+
+            // The actual GET call
+            //await client.GetAsync("https://identity.fhict.nl/connect/authorize?client_id=i387766-simplified&scope=fhict%20fhict_personal%20openid%20profile%20email%20roles&response_type=token&redirect_uri=http://localhost:54680/StandardServices/Studentenplein");
+            var encoded = Uri.EscapeUriString("&scope=fhict fhict_personal openid profile email roles&response_type=token");
+            var redirectUri = HttpUtility.HtmlEncode("?client_id=i387766-simplified&redirect_uri=http://localhost:54680/");
+
+            var result = host + redirectUri + encoded;
+
+            ViewData["redirectUrl"] = result;
+
             return View();
         }
 
@@ -70,10 +81,10 @@ namespace Simplified_School_Portal.Controllers
             */
             // Set up a GET call
             var client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IlZickNEN1NyWFhSVDYzYVVpbktPZm11cl9xcyIsImtpZCI6IlZickNEN1NyWFhSVDYzYVVpbktPZm11cl9xcyJ9.eyJpc3MiOiJodHRwczovL2lkZW50aXR5LmZoaWN0Lm5sIiwiYXVkIjoiaHR0cHM6Ly9pZGVudGl0eS5maGljdC5ubC9yZXNvdXJjZXMiLCJleHAiOjE1MjU3MTk5ODYsIm5iZiI6MTUyNTcxMjc4NiwiY2xpZW50X2lkIjoiYXBpLWNsaWVudCIsInVybjpubC5maGljdDp0cnVzdGVkX2NsaWVudCI6InRydWUiLCJzY29wZSI6WyJvcGVuaWQiLCJwcm9maWxlIiwiZW1haWwiLCJmaGljdCIsImZoaWN0X3BlcnNvbmFsIiwiZmhpY3RfbG9jYXRpb24iXSwic3ViIjoiYWFhYTQ3ZGEtZGU2OS00YmMwLTk0NjktMDA4NDU2MTI4YTZiIiwiYXV0aF90aW1lIjoxNTI1NzEyNzg2LCJpZHAiOiJmaGljdC1zc28iLCJyb2xlIjpbInVzZXIiLCJzdHVkZW50Il0sInVwbiI6IkkzODc3NjZAZmhpY3QubmwiLCJuYW1lIjoiU2FnaXMsVG9iaWFzIFQuRy5NLiIsImVtYWlsIjoidC5zYWdpc0BzdHVkZW50LmZvbnR5cy5ubCIsInVybjpubC5maGljdDpzY2hlZHVsZSI6ImNsYXNzfFMyMiIsImZvbnR5c191cG4iOiIzODc3NjZAc3R1ZGVudC5mb250eXMubmwiLCJhbXIiOlsiZXh0ZXJuYWwiXX0.WnwZL7iQZesUrCJdId9c9wQAXBxEKVx-Aj6lG0IhJk6GuCtvUBsl7F-vVKNzdx9CNkEE6B9QP13lVhadDCQnlZu8kKgLut31UqW4zmI12gBcpgLiuQxlNNtciNPkIUuVVFhdMeq8XDfnTqIGD1TUyP9zNq5e0NgfRZss9TPlFt0yt4eOcXBx6oN-4qrFeiIVVtDHT8gQXkqpECK-9YxCvxrFhk1K-c8a2lqM_MbxA2ibx-MnoMTdg-TQmQQ2hhJxuQ9IkDya5-MzF4BphwDJhBZruYhfujII995BvQwm6pADF_wOPXtEr3-LJvyAR3SGBcVJ6q6X_yRPKgd69sBPpQ");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IlZickNEN1NyWFhSVDYzYVVpbktPZm11cl9xcyIsImtpZCI6IlZickNEN1NyWFhSVDYzYVVpbktPZm11cl9xcyJ9.eyJpc3MiOiJodHRwczovL2lkZW50aXR5LmZoaWN0Lm5sIiwiYXVkIjoiaHR0cHM6Ly9pZGVudGl0eS5maGljdC5ubC9yZXNvdXJjZXMiLCJleHAiOjE1MjU3NzUzNzIsIm5iZiI6MTUyNTc2ODE3MiwiY2xpZW50X2lkIjoiYXBpLWNsaWVudCIsInVybjpubC5maGljdDp0cnVzdGVkX2NsaWVudCI6InRydWUiLCJzY29wZSI6WyJvcGVuaWQiLCJwcm9maWxlIiwiZW1haWwiLCJmaGljdCIsImZoaWN0X3BlcnNvbmFsIiwiZmhpY3RfbG9jYXRpb24iXSwic3ViIjoiYWFhYTQ3ZGEtZGU2OS00YmMwLTk0NjktMDA4NDU2MTI4YTZiIiwiYXV0aF90aW1lIjoxNTI1NzY4MTcxLCJpZHAiOiJmaGljdC1zc28iLCJyb2xlIjpbInVzZXIiLCJzdHVkZW50Il0sInVwbiI6IkkzODc3NjZAZmhpY3QubmwiLCJuYW1lIjoiU2FnaXMsVG9iaWFzIFQuRy5NLiIsImVtYWlsIjoidC5zYWdpc0BzdHVkZW50LmZvbnR5cy5ubCIsInVybjpubC5maGljdDpzY2hlZHVsZSI6ImNsYXNzfFMyMiIsImZvbnR5c191cG4iOiIzODc3NjZAc3R1ZGVudC5mb250eXMubmwiLCJhbXIiOlsiZXh0ZXJuYWwiXX0.KJ5B39lBMBHyf93cYHpA_woH2z8sr8ZXTXD5hOwOPsh4Qcim8RuOBG2yB6putfmDjV311Gq-y_PZwW0awU9dDRymeEp_LfMQpssFs6WqynwoAOB34FnKegL75LOiWqf4ncXCeLs7UMEsEXxJfeJRkhikiSZXg9XL03_a3u1CuNTO130ykfrybOlMXZI_ZIOy71jITp-APZz6VBr37o--neh6CzGIHfqGpdorfeGqfvsIwH-v9b-2EPqSVeWu2GKEw56O_OwqPqMr753jXkZ7SrfvInpbvGasagjhBYuRxLz6iWEQA3X7CfqiwzQOqHmxLW8I8XPgLhKaaGSBb_z1AQ");
 
             // The actual GET call
-            var response = await client.GetAsync("https://api.fhict.nl/schedule/me?days=7");
+            var response = await client.GetAsync("https://api.fhict.nl/schedule/me?start=7&startLastMonday=true");
             var data = JObject.Parse(await response.Content.ReadAsStringAsync());
 
             var title = (string)data["title"];
@@ -105,10 +116,10 @@ namespace Simplified_School_Portal.Controllers
             List<Course> courses = new List<Course>();
 
             var client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IlZickNEN1NyWFhSVDYzYVVpbktPZm11cl9xcyIsImtpZCI6IlZickNEN1NyWFhSVDYzYVVpbktPZm11cl9xcyJ9.eyJpc3MiOiJodHRwczovL2lkZW50aXR5LmZoaWN0Lm5sIiwiYXVkIjoiaHR0cHM6Ly9pZGVudGl0eS5maGljdC5ubC9yZXNvdXJjZXMiLCJleHAiOjE1MjU3MTk5ODYsIm5iZiI6MTUyNTcxMjc4NiwiY2xpZW50X2lkIjoiYXBpLWNsaWVudCIsInVybjpubC5maGljdDp0cnVzdGVkX2NsaWVudCI6InRydWUiLCJzY29wZSI6WyJvcGVuaWQiLCJwcm9maWxlIiwiZW1haWwiLCJmaGljdCIsImZoaWN0X3BlcnNvbmFsIiwiZmhpY3RfbG9jYXRpb24iXSwic3ViIjoiYWFhYTQ3ZGEtZGU2OS00YmMwLTk0NjktMDA4NDU2MTI4YTZiIiwiYXV0aF90aW1lIjoxNTI1NzEyNzg2LCJpZHAiOiJmaGljdC1zc28iLCJyb2xlIjpbInVzZXIiLCJzdHVkZW50Il0sInVwbiI6IkkzODc3NjZAZmhpY3QubmwiLCJuYW1lIjoiU2FnaXMsVG9iaWFzIFQuRy5NLiIsImVtYWlsIjoidC5zYWdpc0BzdHVkZW50LmZvbnR5cy5ubCIsInVybjpubC5maGljdDpzY2hlZHVsZSI6ImNsYXNzfFMyMiIsImZvbnR5c191cG4iOiIzODc3NjZAc3R1ZGVudC5mb250eXMubmwiLCJhbXIiOlsiZXh0ZXJuYWwiXX0.WnwZL7iQZesUrCJdId9c9wQAXBxEKVx-Aj6lG0IhJk6GuCtvUBsl7F-vVKNzdx9CNkEE6B9QP13lVhadDCQnlZu8kKgLut31UqW4zmI12gBcpgLiuQxlNNtciNPkIUuVVFhdMeq8XDfnTqIGD1TUyP9zNq5e0NgfRZss9TPlFt0yt4eOcXBx6oN-4qrFeiIVVtDHT8gQXkqpECK-9YxCvxrFhk1K-c8a2lqM_MbxA2ibx-MnoMTdg-TQmQQ2hhJxuQ9IkDya5-MzF4BphwDJhBZruYhfujII995BvQwm6pADF_wOPXtEr3-LJvyAR3SGBcVJ6q6X_yRPKgd69sBPpQ");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IlZickNEN1NyWFhSVDYzYVVpbktPZm11cl9xcyIsImtpZCI6IlZickNEN1NyWFhSVDYzYVVpbktPZm11cl9xcyJ9.eyJpc3MiOiJodHRwczovL2lkZW50aXR5LmZoaWN0Lm5sIiwiYXVkIjoiaHR0cHM6Ly9pZGVudGl0eS5maGljdC5ubC9yZXNvdXJjZXMiLCJleHAiOjE1MjU3NzY2NzgsIm5iZiI6MTUyNTc2OTQ3OCwiY2xpZW50X2lkIjoiYXBpLWNsaWVudCIsInVybjpubC5maGljdDp0cnVzdGVkX2NsaWVudCI6InRydWUiLCJzY29wZSI6WyJvcGVuaWQiLCJwcm9maWxlIiwiZW1haWwiLCJmaGljdCIsImZoaWN0X3BlcnNvbmFsIiwiZmhpY3RfbG9jYXRpb24iXSwic3ViIjoiYWFhYTQ3ZGEtZGU2OS00YmMwLTk0NjktMDA4NDU2MTI4YTZiIiwiYXV0aF90aW1lIjoxNTI1NzY4MTcxLCJpZHAiOiJmaGljdC1zc28iLCJyb2xlIjpbInVzZXIiLCJzdHVkZW50Il0sInVwbiI6IkkzODc3NjZAZmhpY3QubmwiLCJuYW1lIjoiU2FnaXMsVG9iaWFzIFQuRy5NLiIsImVtYWlsIjoidC5zYWdpc0BzdHVkZW50LmZvbnR5cy5ubCIsInVybjpubC5maGljdDpzY2hlZHVsZSI6ImNsYXNzfFMyMiIsImZvbnR5c191cG4iOiIzODc3NjZAc3R1ZGVudC5mb250eXMubmwiLCJhbXIiOlsiZXh0ZXJuYWwiXX0.cA8hzc0CZJma-8nWST4zLEdRKQys6a0OO8Mfpj4fB3ZpFRByEkodu2h8RNuPs9_LD0NXzeFnD5bM_5-NJSx27YeYaATeAMeeOwJ6qJbDX0DcOISEkY7seS1CfXfD3NF0o8C8ybqjarBLxTu7FNcoT0jqlrxTUwXTVGw5OtjPH58qtJiP4so37gKssQgoNSOz3ZexBl88rFBpQDkWErJvPwT9fsiOdpKN2S7GJM1HrHsc8-6Eo8UxdG1jKr-UooEJeOz6GFTni8J4QR6LBA7vf63qN8kqqwtvqOLK4f48WEjDhz8j3Gg6fX31SHIAbG9sx0bQhGc88rXe54rCLrfaGA");
 
             // The actual GET call
-            var response = await client.GetAsync("https://api.fhict.nl/schedule/me?days=7");
+            var response = await client.GetAsync("https://api.fhict.nl/schedule/me?days=7&startLastMonday=true");
             var data = JObject.Parse(await response.Content.ReadAsStringAsync());
             var dataArray = (JArray)data["data"];
 

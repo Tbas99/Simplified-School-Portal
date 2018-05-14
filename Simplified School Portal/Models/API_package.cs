@@ -14,12 +14,18 @@ namespace Simplified_School_Portal.Models
     
     public partial class API_package
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public API_package()
+        {
+            this.Package_call = new HashSet<Package_call>();
+        }
+    
         public int API_packageId { get; set; }
         public string Package_name { get; set; }
         public string Package_description { get; set; }
         public string Package_url { get; set; }
-        public int Package_callId { get; set; }
     
-        public virtual Package_call Package_call { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Package_call> Package_call { get; set; }
     }
 }

@@ -1,0 +1,79 @@
+﻿@model Simplified_School_Portal.Models.Callmodel
+@{
+    // Add options to drop down boxes.
+    List<SelectListItem> call_auth_needed_options = new List<SelectListItem>();
+    call_auth_needed_options.Add(new SelectListItem
+    {
+        Text = "Authorization needed?",
+        Value = "",
+        Disabled = true,
+        Selected = true
+    });
+    call_auth_needed_options.Add(new SelectListItem
+    {
+        Text = "Yes",
+        Value = "Yes",
+    });
+    call_auth_needed_options.Add(new SelectListItem
+    {
+        Text = "No",
+        Value = "No"
+    });
+    call_auth_needed_options.Add(new SelectListItem
+    {
+        Text = "Special - Please explain this in the description above.",
+        Value = "Special"
+    });
+
+    List<SelectListItem> call_type_options = new List<SelectListItem>();
+    call_type_options.Add(new SelectListItem
+    {
+        Text = "Call type",
+        Value = "",
+        Disabled = true,
+        Selected = true
+    });
+    call_type_options.Add(new SelectListItem
+    {
+        Text = "GET",
+        Value = "GET"
+    });
+    call_type_options.Add(new SelectListItem
+    {
+        Text = "POST",
+        Value = "POST"
+    });
+}
+
+@using (Html.BeginForm("_APIcallPartial", "BeheerServices", FormMethod.Post, new { @class = "col-md-4 col-md-offset-4 go-right formTweaks" }))
+{
+    <!-- To negate XSS attacks, generate an AntiForgeryToken -->
+    @Html.AntiForgeryToken()
+
+    <!-- Make sure everything is filled, show a warning if not -->
+    @Html.ValidationSummary()
+
+    <h3>Create a new GET call</h3>
+
+    <div class="form-group">
+        @Html.TextBoxFor(m => m.call, new { @class = "form-control", @id = "callName", @name = "callName", @type = "text", @required = "required" })
+        <label for="callName">The name of the call</label>
+    </div>
+
+    <div class="form-group">
+        @Html.TextBoxFor(m => m.call_url, new { @class = "form-control", @id = "callUrl", @name = "callUrl", @type = "url", @required = "required" })
+        <label for="callUrl">The URL of the call</label>
+    </div>
+
+    <div class="form-group">
+        @Html.DropDownListFor(m => m.call_auth_needed, call_auth_needed_options, new { @class = "form-control selectorBoxes", @id = "call_auth_needed", @required = "required" })
+    </div>
+
+    <div class="form-group">
+        @Html.DropDownListFor(m => m.call_type, call_type_options, new { @class = "form-control selectorBoxes", @id = "call_type", @required = "required" })
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-default btn-block" value="Log in">Submit</button>
+    </div>
+}

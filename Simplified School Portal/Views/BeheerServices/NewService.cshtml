@@ -1,5 +1,66 @@
-﻿@{
+﻿@model Simplified_School_Portal.Models.APImodel
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Page to create a new service</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <h2>Create a new service</h2>
+
+
+        </div>
+        <div class="col-md-4">
+            <h2 class="text-center">Create a new API Package</h2>
+            @using (Html.BeginForm("NewService", "BeheerServices", FormMethod.Post, new { @class = "col-md-12 go-right formTweaks cleanMargin" }))
+            {
+                <!-- To negate XSS attacks, generate an AntiForgeryToken -->
+                @Html.AntiForgeryToken()
+
+                <!-- Make sure everything is filled, show a warning if not -->
+                @Html.ValidationSummary()
+
+                <!-- Name input-->
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.package_name, new { @class = "form-control", @id = "packageName", @name = "packageName", @type = "text", @required = "required" })
+                    <label for="packageName">The name of the package</label>
+                </div>
+
+                <!-- Email input-->
+                <div class="form-group">
+                    @Html.TextAreaFor(m => m.package_descr, new { @class = "form-control", @id = "packageDescr", @name = "packageDescr", @type = "text", @required = "required" })
+                    <label for="packageDescr">The description of the package</label>
+                </div>
+
+                <!-- Message body-->
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.package_url, new { @class = "form-control", @id = "packageUrl", @name = "packageUrl", @type = "url", @required = "required" })
+                    <label for="packageUrl">The URL of the package</label>
+                </div>
+
+                <div class="form-group">
+                    @Html.ListBoxFor(m => m.SelectedCalls, Model.Calls, new { @class = "form-control", @id = "callId", @name = "callId", @required = "required" })
+                </div>
+
+
+                <!-- Form actions -->
+                <div class="form-group">
+                    <button type="submit" class="btn btn-default btn-block" value="RegisterPackage">Submit</button>
+                </div>
+            }
+            @if (ViewBag.Message != null)
+            {
+                <script type="text/javascript">
+                    window.onload = function () {
+                        alert("@ViewBag.Message");
+                    };
+                </script>
+            }
+            <button class="btn btn-primary btn-block" id='createGetCall'>Create a new GET call</button>
+        </div>
+    </div>
+    <div id='GETcallModal' class="modal fade" data-url='@Url.Action("_APIcallPartial", "BeheerServices")'>
+        <div id='GETcallform'>
+        </div>
+    </div>
+</div>

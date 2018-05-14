@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SSPDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="SSPDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="API_package">
           <Key>
             <PropertyRef Name="API_packageId" />
@@ -13,7 +13,6 @@
           <Property Name="Package_name" Type="text" Nullable="false" />
           <Property Name="Package_description" Type="text" Nullable="false" />
           <Property Name="Package_url" Type="text" Nullable="false" />
-          <Property Name="Package_callId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Feature_request">
           <Key>
@@ -36,6 +35,16 @@
           <Property Name="Request_user" Type="text" Nullable="false" />
           <Property Name="Request_date" Type="date" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'C:\USERS\TOBIAS\SOURCE\REPOS\SIMPLIFIED-SCHOOL-PORTAL\SIMPLIFIED SCHOOL PORTAL\APP_DATA\SSPDATABASE.MDF.dbo.Mapping_package_call' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Mapping_package_call">
+          <Key>
+            <PropertyRef Name="API_packageId" />
+            <PropertyRef Name="Package_callId" />
+          </Key>
+          <Property Name="API_packageId" Type="int" Nullable="false" />
+          <Property Name="Package_callId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Package_call">
           <Key>
             <PropertyRef Name="Package_callId" />
@@ -46,14 +55,6 @@
           <Property Name="Call_verificationNeeded" Type="text" />
           <Property Name="Call_type" Type="text" Nullable="false" />
         </EntityType>
-        <EntityType Name="Page_position">
-          <Key>
-            <PropertyRef Name="Page_positionId" />
-          </Key>
-          <Property Name="Page_positionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Page_position_column" Type="text" Nullable="false" />
-          <Property Name="Package_callId" Type="int" Nullable="false" />
-        </EntityType>
         <EntityType Name="Request">
           <Key>
             <PropertyRef Name="RequestId" />
@@ -62,26 +63,26 @@
           <Property Name="Feature_requestId" Type="int" Nullable="false" />
           <Property Name="Info_requestId" Type="int" Nullable="false" />
         </EntityType>
-        <Association Name="FK_API_package_call">
-          <End Role="Package_call" Type="Self.Package_call" Multiplicity="1" />
-          <End Role="API_package" Type="Self.API_package" Multiplicity="*" />
+        <Association Name="FK_Mapping_ToAPIPackage">
+          <End Role="API_package" Type="Self.API_package" Multiplicity="1" />
+          <End Role="Mapping_package_call" Type="Self.Mapping_package_call" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Package_call">
-              <PropertyRef Name="Package_callId" />
+            <Principal Role="API_package">
+              <PropertyRef Name="API_packageId" />
             </Principal>
-            <Dependent Role="API_package">
-              <PropertyRef Name="Package_callId" />
+            <Dependent Role="Mapping_package_call">
+              <PropertyRef Name="API_packageId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Page_position_call">
+        <Association Name="FK_Mapping_ToPackageCall">
           <End Role="Package_call" Type="Self.Package_call" Multiplicity="1" />
-          <End Role="Page_position" Type="Self.Page_position" Multiplicity="*" />
+          <End Role="Mapping_package_call" Type="Self.Mapping_package_call" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Package_call">
               <PropertyRef Name="Package_callId" />
             </Principal>
-            <Dependent Role="Page_position">
+            <Dependent Role="Mapping_package_call">
               <PropertyRef Name="Package_callId" />
             </Dependent>
           </ReferentialConstraint>
@@ -115,15 +116,16 @@
           <EntitySet Name="Feature_request" EntityType="Self.Feature_request" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Info_request" EntityType="Self.Info_request" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Package_call" EntityType="Self.Package_call" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Page_position" EntityType="Self.Page_position" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Request" EntityType="Self.Request" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_API_package_call" Association="Self.FK_API_package_call">
-            <End Role="Package_call" EntitySet="Package_call" />
+          <EntitySet Name="Mapping_package_call" EntityType="Self.Mapping_package_call" store:Type="Tables" Schema="dbo">
+          </EntitySet>
+          <AssociationSet Name="FK_Mapping_ToAPIPackage" Association="Self.FK_Mapping_ToAPIPackage">
             <End Role="API_package" EntitySet="API_package" />
+            <End Role="Mapping_package_call" EntitySet="Mapping_package_call" />
           </AssociationSet>
-          <AssociationSet Name="FK_Page_position_call" Association="Self.FK_Page_position_call">
+          <AssociationSet Name="FK_Mapping_ToPackageCall" Association="Self.FK_Mapping_ToPackageCall">
             <End Role="Package_call" EntitySet="Package_call" />
-            <End Role="Page_position" EntitySet="Page_position" />
+            <End Role="Mapping_package_call" EntitySet="Mapping_package_call" />
           </AssociationSet>
           <AssociationSet Name="FK_Request_Feature" Association="Self.FK_Request_Feature">
             <End Role="Feature_request" EntitySet="Feature_request" />
@@ -134,65 +136,72 @@
             <End Role="Request" EntitySet="Request" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SSPDatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="SSPDatabaseEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="API_package" EntityType="SSPDatabaseModel.API_package" />
+          <EntitySet Name="Feature_request" EntityType="SSPDatabaseModel.Feature_request" />
+          <EntitySet Name="Info_request" EntityType="SSPDatabaseModel.Info_request" />
+          <EntitySet Name="Package_call" EntityType="SSPDatabaseModel.Package_call" />
+          <EntitySet Name="Request" EntityType="SSPDatabaseModel.Request" />
+          <AssociationSet Name="FK_Request_Feature" Association="SSPDatabaseModel.FK_Request_Feature">
+            <End Role="Feature_request" EntitySet="Feature_request" />
+            <End Role="Request" EntitySet="Request" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Request_Info" Association="SSPDatabaseModel.FK_Request_Info">
+            <End Role="Info_request" EntitySet="Info_request" />
+            <End Role="Request" EntitySet="Request" />
+          </AssociationSet>
+          <AssociationSet Name="Mapping_package_call" Association="SSPDatabaseModel.Mapping_package_call">
+            <End Role="API_package" EntitySet="API_package" />
+            <End Role="Package_call" EntitySet="Package_call" />
+          </AssociationSet>
+          </EntityContainer>
         <EntityType Name="API_package">
           <Key>
             <PropertyRef Name="API_packageId" />
           </Key>
           <Property Name="API_packageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Package_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Package_description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Package_url" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Package_callId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Package_call" Relationship="Self.FK_API_package_call" FromRole="API_package" ToRole="Package_call" />
+          <Property Name="Package_name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Package_description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Package_url" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Package_call" Relationship="SSPDatabaseModel.Mapping_package_call" FromRole="API_package" ToRole="Package_call" />
         </EntityType>
         <EntityType Name="Feature_request">
           <Key>
             <PropertyRef Name="Feature_requestId" />
           </Key>
           <Property Name="Feature_requestId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Feature_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Feature_develop_url" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Feature_request_issuer" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Feature_name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Feature_develop_url" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Feature_request_issuer" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Feature_request_date" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="Feature_is_implemented" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Request" Relationship="Self.FK_Request_Feature" FromRole="Feature_request" ToRole="Request" />
+          <Property Name="Feature_is_implemented" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Request" Relationship="SSPDatabaseModel.FK_Request_Feature" FromRole="Feature_request" ToRole="Request" />
         </EntityType>
         <EntityType Name="Info_request">
           <Key>
             <PropertyRef Name="Info_requestId" />
           </Key>
           <Property Name="Info_requestId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Request_user" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Request_user" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Request_date" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="Request" Relationship="Self.FK_Request_Info" FromRole="Info_request" ToRole="Request" />
+          <NavigationProperty Name="Request" Relationship="SSPDatabaseModel.FK_Request_Info" FromRole="Info_request" ToRole="Request" />
         </EntityType>
         <EntityType Name="Package_call">
           <Key>
             <PropertyRef Name="Package_callId" />
           </Key>
           <Property Name="Package_callId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Call" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Call" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Call_url" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Call_verificationNeeded" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Call_type" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="API_package" Relationship="Self.FK_API_package_call" FromRole="Package_call" ToRole="API_package" />
-          <NavigationProperty Name="Page_position" Relationship="Self.FK_Page_position_call" FromRole="Package_call" ToRole="Page_position" />
-        </EntityType>
-        <EntityType Name="Page_position">
-          <Key>
-            <PropertyRef Name="Page_positionId" />
-          </Key>
-          <Property Name="Page_positionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Page_position_column" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Package_callId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Package_call" Relationship="Self.FK_Page_position_call" FromRole="Page_position" ToRole="Package_call" />
+          <Property Name="Call_type" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="API_package" Relationship="SSPDatabaseModel.Mapping_package_call" FromRole="Package_call" ToRole="API_package" />
         </EntityType>
         <EntityType Name="Request">
           <Key>
@@ -201,24 +210,12 @@
           <Property Name="RequestId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Feature_requestId" Type="Int32" Nullable="false" />
           <Property Name="Info_requestId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Feature_request" Relationship="Self.FK_Request_Feature" FromRole="Request" ToRole="Feature_request" />
-          <NavigationProperty Name="Info_request" Relationship="Self.FK_Request_Info" FromRole="Request" ToRole="Info_request" />
+          <NavigationProperty Name="Feature_request" Relationship="SSPDatabaseModel.FK_Request_Feature" FromRole="Request" ToRole="Feature_request" />
+          <NavigationProperty Name="Info_request" Relationship="SSPDatabaseModel.FK_Request_Info" FromRole="Request" ToRole="Info_request" />
         </EntityType>
-        <Association Name="FK_API_package_call">
-          <End Role="Package_call" Type="Self.Package_call" Multiplicity="1" />
-          <End Role="API_package" Type="Self.API_package" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Package_call">
-              <PropertyRef Name="Package_callId" />
-            </Principal>
-            <Dependent Role="API_package">
-              <PropertyRef Name="Package_callId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Request_Feature">
-          <End Role="Feature_request" Type="Self.Feature_request" Multiplicity="1" />
-          <End Role="Request" Type="Self.Request" Multiplicity="*" />
+          <End Type="SSPDatabaseModel.Feature_request" Role="Feature_request" Multiplicity="1" />
+          <End Type="SSPDatabaseModel.Request" Role="Request" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Feature_request">
               <PropertyRef Name="Feature_requestId" />
@@ -229,8 +226,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Request_Info">
-          <End Role="Info_request" Type="Self.Info_request" Multiplicity="1" />
-          <End Role="Request" Type="Self.Request" Multiplicity="*" />
+          <End Type="SSPDatabaseModel.Info_request" Role="Info_request" Multiplicity="1" />
+          <End Type="SSPDatabaseModel.Request" Role="Request" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Info_request">
               <PropertyRef Name="Info_requestId" />
@@ -240,43 +237,11 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Page_position_call">
-          <End Role="Package_call" Type="Self.Package_call" Multiplicity="1" />
-          <End Role="Page_position" Type="Self.Page_position" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Package_call">
-              <PropertyRef Name="Package_callId" />
-            </Principal>
-            <Dependent Role="Page_position">
-              <PropertyRef Name="Package_callId" />
-            </Dependent>
-          </ReferentialConstraint>
+        <Association Name="Mapping_package_call">
+          <End Type="SSPDatabaseModel.API_package" Role="API_package" Multiplicity="*" />
+          <End Type="SSPDatabaseModel.Package_call" Role="Package_call" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="SSPDatabaseEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="API_package" EntityType="Self.API_package" />
-          <EntitySet Name="Feature_request" EntityType="Self.Feature_request" />
-          <EntitySet Name="Info_request" EntityType="Self.Info_request" />
-          <EntitySet Name="Package_call" EntityType="Self.Package_call" />
-          <EntitySet Name="Page_position" EntityType="Self.Page_position" />
-          <EntitySet Name="Request" EntityType="Self.Request" />
-          <AssociationSet Name="FK_API_package_call" Association="Self.FK_API_package_call">
-            <End Role="Package_call" EntitySet="Package_call" />
-            <End Role="API_package" EntitySet="API_package" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Request_Feature" Association="Self.FK_Request_Feature">
-            <End Role="Feature_request" EntitySet="Feature_request" />
-            <End Role="Request" EntitySet="Request" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Request_Info" Association="Self.FK_Request_Info">
-            <End Role="Info_request" EntitySet="Info_request" />
-            <End Role="Request" EntitySet="Request" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Page_position_call" Association="Self.FK_Page_position_call">
-            <End Role="Package_call" EntitySet="Package_call" />
-            <End Role="Page_position" EntitySet="Page_position" />
-          </AssociationSet>
-        </EntityContainer>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -285,53 +250,43 @@
           <EntitySetMapping Name="API_package">
             <EntityTypeMapping TypeName="SSPDatabaseModel.API_package">
               <MappingFragment StoreEntitySet="API_package">
-                <ScalarProperty Name="API_packageId" ColumnName="API_packageId" />
-                <ScalarProperty Name="Package_name" ColumnName="Package_name" />
-                <ScalarProperty Name="Package_description" ColumnName="Package_description" />
                 <ScalarProperty Name="Package_url" ColumnName="Package_url" />
-                <ScalarProperty Name="Package_callId" ColumnName="Package_callId" />
+                <ScalarProperty Name="Package_description" ColumnName="Package_description" />
+                <ScalarProperty Name="Package_name" ColumnName="Package_name" />
+                <ScalarProperty Name="API_packageId" ColumnName="API_packageId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Feature_request">
             <EntityTypeMapping TypeName="SSPDatabaseModel.Feature_request">
               <MappingFragment StoreEntitySet="Feature_request">
-                <ScalarProperty Name="Feature_requestId" ColumnName="Feature_requestId" />
-                <ScalarProperty Name="Feature_name" ColumnName="Feature_name" />
-                <ScalarProperty Name="Feature_develop_url" ColumnName="Feature_develop_url" />
-                <ScalarProperty Name="Feature_request_issuer" ColumnName="Feature_request_issuer" />
-                <ScalarProperty Name="Feature_request_date" ColumnName="Feature_request_date" />
                 <ScalarProperty Name="Feature_is_implemented" ColumnName="Feature_is_implemented" />
+                <ScalarProperty Name="Feature_request_date" ColumnName="Feature_request_date" />
+                <ScalarProperty Name="Feature_request_issuer" ColumnName="Feature_request_issuer" />
+                <ScalarProperty Name="Feature_develop_url" ColumnName="Feature_develop_url" />
+                <ScalarProperty Name="Feature_name" ColumnName="Feature_name" />
+                <ScalarProperty Name="Feature_requestId" ColumnName="Feature_requestId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Info_request">
             <EntityTypeMapping TypeName="SSPDatabaseModel.Info_request">
               <MappingFragment StoreEntitySet="Info_request">
-                <ScalarProperty Name="Info_requestId" ColumnName="Info_requestId" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Request_user" ColumnName="Request_user" />
                 <ScalarProperty Name="Request_date" ColumnName="Request_date" />
+                <ScalarProperty Name="Request_user" ColumnName="Request_user" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Info_requestId" ColumnName="Info_requestId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Package_call">
             <EntityTypeMapping TypeName="SSPDatabaseModel.Package_call">
               <MappingFragment StoreEntitySet="Package_call">
-                <ScalarProperty Name="Package_callId" ColumnName="Package_callId" />
-                <ScalarProperty Name="Call" ColumnName="Call" />
-                <ScalarProperty Name="Call_url" ColumnName="Call_url" />
-                <ScalarProperty Name="Call_verificationNeeded" ColumnName="Call_verificationNeeded" />
                 <ScalarProperty Name="Call_type" ColumnName="Call_type" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Page_position">
-            <EntityTypeMapping TypeName="SSPDatabaseModel.Page_position">
-              <MappingFragment StoreEntitySet="Page_position">
-                <ScalarProperty Name="Page_positionId" ColumnName="Page_positionId" />
-                <ScalarProperty Name="Page_position_column" ColumnName="Page_position_column" />
+                <ScalarProperty Name="Call_verificationNeeded" ColumnName="Call_verificationNeeded" />
+                <ScalarProperty Name="Call_url" ColumnName="Call_url" />
+                <ScalarProperty Name="Call" ColumnName="Call" />
                 <ScalarProperty Name="Package_callId" ColumnName="Package_callId" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -339,12 +294,20 @@
           <EntitySetMapping Name="Request">
             <EntityTypeMapping TypeName="SSPDatabaseModel.Request">
               <MappingFragment StoreEntitySet="Request">
-                <ScalarProperty Name="RequestId" ColumnName="RequestId" />
-                <ScalarProperty Name="Feature_requestId" ColumnName="Feature_requestId" />
                 <ScalarProperty Name="Info_requestId" ColumnName="Info_requestId" />
+                <ScalarProperty Name="Feature_requestId" ColumnName="Feature_requestId" />
+                <ScalarProperty Name="RequestId" ColumnName="RequestId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <AssociationSetMapping Name="Mapping_package_call" TypeName="SSPDatabaseModel.Mapping_package_call" StoreEntitySet="Mapping_package_call">
+            <EndProperty Name="Package_call">
+              <ScalarProperty Name="Package_callId" ColumnName="Package_callId" />
+            </EndProperty>
+            <EndProperty Name="API_package">
+              <ScalarProperty Name="API_packageId" ColumnName="API_packageId" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

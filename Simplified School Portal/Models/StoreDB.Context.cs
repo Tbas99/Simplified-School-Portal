@@ -29,7 +29,6 @@ namespace Simplified_School_Portal.Models
         public virtual DbSet<Feature_request> Feature_request { get; set; }
         public virtual DbSet<Info_request> Info_request { get; set; }
         public virtual DbSet<Package_call> Package_call { get; set; }
-        public virtual DbSet<Page_position> Page_position { get; set; }
         public virtual DbSet<Request> Request { get; set; }
     }
 }

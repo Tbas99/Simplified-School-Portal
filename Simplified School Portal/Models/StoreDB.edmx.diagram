@@ -5,16 +5,14 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="c97faa53e1c24e95bacb155c6b84c3ce" Name="Diagram1">
-        <EntityTypeShape EntityType="SSPDatabaseModel.API_package" Width="1.5" PointX="3.5" PointY="7.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SSPDatabaseModel.Feature_request" Width="1.5" PointX="1.125" PointY="1.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SSPDatabaseModel.Info_request" Width="1.5" PointX="5.625" PointY="1.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SSPDatabaseModel.Package_call" Width="1.5" PointX="0.75" PointY="4.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="SSPDatabaseModel.Page_position" Width="1.5" PointX="3.5" PointY="4.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="SSPDatabaseModel.Request" Width="1.5" PointX="3.375" PointY="1.25" IsExpanded="true" />
-        <AssociationConnector Association="SSPDatabaseModel.FK_API_package_call" ManuallyRouted="false" />
-        <AssociationConnector Association="SSPDatabaseModel.FK_Request_Feature" ManuallyRouted="false" />
-        <AssociationConnector Association="SSPDatabaseModel.FK_Request_Info" ManuallyRouted="false" />
-        <AssociationConnector Association="SSPDatabaseModel.FK_Page_position_call" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="SSPDatabaseModel.API_package" Width="1.5" PointX="6.25" PointY="1.375" />
+        <EntityTypeShape EntityType="SSPDatabaseModel.Feature_request" Width="1.5" PointX="0.75" PointY="4.875" />
+        <EntityTypeShape EntityType="SSPDatabaseModel.Info_request" Width="1.5" PointX="0.75" PointY="0.875" />
+        <EntityTypeShape EntityType="SSPDatabaseModel.Package_call" Width="1.5" PointX="6.25" PointY="4.875" />
+        <EntityTypeShape EntityType="SSPDatabaseModel.Request" Width="1.5" PointX="3" PointY="1" />
+        <AssociationConnector Association="SSPDatabaseModel.FK_Request_Feature" />
+        <AssociationConnector Association="SSPDatabaseModel.FK_Request_Info" />
+        <AssociationConnector Association="SSPDatabaseModel.Mapping_package_call" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

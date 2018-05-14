@@ -7075,3 +7075,9 @@ form.go-right input:focus + label, form.go-right textarea:focus + label {
     color: #666;
     text-align: center;
 }
+
+/* For the pop-up */
+.selectorBoxes {
+    background: white;
+    color: #555555;
+}

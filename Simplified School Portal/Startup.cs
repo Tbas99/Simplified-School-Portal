@@ -39,9 +39,9 @@ namespace Simplified_School_Portal
             {
                 ClientId = "i387766-simplified",
                 Authority = "https://identity.fhict.nl/connect/authorize",
-                RedirectUri = "http://localhost:54680/",
-                ResponseType = "id_token token",
-                Scope = "fhict fhict_personal",
+                RedirectUri = "https://localhost:44363/StandardServices​",
+                ResponseType = "code",
+                Scope = "fhict fhict_personal openid email",
 
                 UseTokenLifetime = true,
                 SignInAsAuthenticationType = "Cookies"

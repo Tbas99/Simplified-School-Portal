@@ -18,7 +18,6 @@ namespace Simplified_School_Portal.Models
         public Package_call()
         {
             this.API_package = new HashSet<API_package>();
-            this.Page_position = new HashSet<Page_position>();
         }
     
         public int Package_callId { get; set; }
@@ -29,7 +28,5 @@ namespace Simplified_School_Portal.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<API_package> API_package { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Page_position> Page_position { get; set; }
     }
 }

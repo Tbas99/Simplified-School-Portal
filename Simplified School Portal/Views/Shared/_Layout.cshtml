@@ -26,9 +26,10 @@
                 {
                     @Html.Partial("_BeheerdersPartial")
                 }
-                else { 
+                else
+                {
                     @Html.Partial("_UserPartial")
-                }               
+                }
             </div>
         </div>
     </div>
@@ -37,7 +38,27 @@
     </div>
 
     @Scripts.Render("~/bundles/jquery")
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+
+    @* TODO: only show this script on NewService page *@
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#createGetCall').click(function () {
+                var url = $('#GETcallModal').data('url');
+
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function (data) {
+                        $("#GETcallform").html(data);
+                        $('#GETcallModal').modal("show");
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

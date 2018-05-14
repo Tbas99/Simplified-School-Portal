@@ -29,17 +29,6 @@ namespace Simplified_School_Portal.Controllers
         // GET: StandardServices
         public ActionResult Index()
         {
-            //var client = new HttpClient();
-
-            // The actual GET call
-            //await client.GetAsync("https://identity.fhict.nl/connect/authorize?client_id=i387766-simplified&scope=fhict%20fhict_personal%20openid%20profile%20email%20roles&response_type=token&redirect_uri=http://localhost:54680/StandardServices/Studentenplein");
-            var encoded = Uri.EscapeUriString("&scope=fhict fhict_personal openid profile email roles&response_type=token");
-            var redirectUri = HttpUtility.HtmlEncode("?client_id=i387766-simplified&redirect_uri=http://localhost:54680/");
-
-            var result = host + redirectUri + encoded;
-
-            ViewData["redirectUrl"] = result;
-
             return View();
         }
 

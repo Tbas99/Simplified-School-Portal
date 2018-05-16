@@ -18,7 +18,16 @@
     </li>
 </ul>
 <ul class="nav navbar-nav navbar-right">
-    <li class="hoverEffect"><a href="https://identity.fhict.nl/connect/authorize?client_id=i387766-simplified&scope=fhict fhict_personal openid profile email roles&redirect_uri=https://localhost:44363/StandardServices​&response_type=code">Log in for students</a></li>
+    @if (Request.Cookies.AllKeys.Contains("usercookie"))
+    {
+        <li class="hoverEffect"><a href="">Hello, @Request.Cookies["usercookie"].Value!</a></li>
+        <li class="hoverEffect"><a href="@Url.Action("Log_out", "StandardServices)">Log out</a></li>
+    }
+    else
+    {
+        <li class="hoverEffect"><a href="https://identity.fhict.nl/connect/authorize?client_id=i387766-simplified&scope=fhict fhict_personal openid profile email roles&redirect_uri=https://localhost:44363/​&response_type=code">Log in for students</a></li>
+    }
+
     @if (Request.IsAuthenticated)
     {
         using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right cleanMargin" }))

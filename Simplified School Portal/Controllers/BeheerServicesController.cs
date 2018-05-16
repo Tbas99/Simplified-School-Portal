@@ -116,7 +116,7 @@ namespace Simplified_School_Portal.Controllers
             db.Package_call.Add(call);
             db.SaveChanges();
 
-            return View("NewService");
+            return View("NewService", listCalls());
         }
 
         [Authorize(Roles = "Admin")]

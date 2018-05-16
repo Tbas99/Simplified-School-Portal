@@ -25,6 +25,7 @@ namespace Simplified_School_Portal.Controllers
     public class StandardServicesController : Controller
     {
         private string host = "https://identity.fhict.nl/connect/authorize";
+        private string lastAction = "";
 
         // GET: StandardServices
         public ActionResult Index()
@@ -32,60 +33,20 @@ namespace Simplified_School_Portal.Controllers
             return View();
         }
 
-        public async Task<ActionResult> Studentenplein()
+        public ActionResult Studentenplein()
         {
-            /*
-            ViewData["Title"] = "Home page";
-
             // First, see if the user is already connected
             var authToken = GetAuthTokenFromSession();
-
-            // If the authorisation process returns a code, exchange it for an access token
-            string currentUrl = Request.Url.ToString();
-
-            if (currentUrl.Contains("access_token"))
-            {
-                try
-                {
-                    var code = Request.QueryString["code"];
-                    //authToken = await GetTokenFromCode(code);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex);
-                    Console.WriteLine(ex.StackTrace);
-                }
-            }
 
             // If the user isn't connected, redirect to the authorisation page
             if (string.IsNullOrEmpty(authToken))
             {
-                return Redirect(host + "?client_id=i387766-simplified&scope=fhict%20fhict_personal%20openid%20profile%20email%20roles&response_type=token&redirect_uri=" + HttpUtility.HtmlEncode("http://localhost:54680/StandardServices/Studentenplein"));
+                return Redirect(host + "?client_id=i387766-simplified&scope=fhict fhict_personal openid profile email roles&response_type=code&redirect_uri=" + HttpUtility.HtmlEncode("https://localhost:44363/StandardServices/Callback"));
             }
-            else
-            {
-                ViewData["token"] = GetAuthTokenFromSession();
-            }
-
-            */
-            // Set up a GET call
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IlZickNEN1NyWFhSVDYzYVVpbktPZm11cl9xcyIsImtpZCI6IlZickNEN1NyWFhSVDYzYVVpbktPZm11cl9xcyJ9.eyJpc3MiOiJodHRwczovL2lkZW50aXR5LmZoaWN0Lm5sIiwiYXVkIjoiaHR0cHM6Ly9pZGVudGl0eS5maGljdC5ubC9yZXNvdXJjZXMiLCJleHAiOjE1MjU3NzUzNzIsIm5iZiI6MTUyNTc2ODE3MiwiY2xpZW50X2lkIjoiYXBpLWNsaWVudCIsInVybjpubC5maGljdDp0cnVzdGVkX2NsaWVudCI6InRydWUiLCJzY29wZSI6WyJvcGVuaWQiLCJwcm9maWxlIiwiZW1haWwiLCJmaGljdCIsImZoaWN0X3BlcnNvbmFsIiwiZmhpY3RfbG9jYXRpb24iXSwic3ViIjoiYWFhYTQ3ZGEtZGU2OS00YmMwLTk0NjktMDA4NDU2MTI4YTZiIiwiYXV0aF90aW1lIjoxNTI1NzY4MTcxLCJpZHAiOiJmaGljdC1zc28iLCJyb2xlIjpbInVzZXIiLCJzdHVkZW50Il0sInVwbiI6IkkzODc3NjZAZmhpY3QubmwiLCJuYW1lIjoiU2FnaXMsVG9iaWFzIFQuRy5NLiIsImVtYWlsIjoidC5zYWdpc0BzdHVkZW50LmZvbnR5cy5ubCIsInVybjpubC5maGljdDpzY2hlZHVsZSI6ImNsYXNzfFMyMiIsImZvbnR5c191cG4iOiIzODc3NjZAc3R1ZGVudC5mb250eXMubmwiLCJhbXIiOlsiZXh0ZXJuYWwiXX0.KJ5B39lBMBHyf93cYHpA_woH2z8sr8ZXTXD5hOwOPsh4Qcim8RuOBG2yB6putfmDjV311Gq-y_PZwW0awU9dDRymeEp_LfMQpssFs6WqynwoAOB34FnKegL75LOiWqf4ncXCeLs7UMEsEXxJfeJRkhikiSZXg9XL03_a3u1CuNTO130ykfrybOlMXZI_ZIOy71jITp-APZz6VBr37o--neh6CzGIHfqGpdorfeGqfvsIwH-v9b-2EPqSVeWu2GKEw56O_OwqPqMr753jXkZ7SrfvInpbvGasagjhBYuRxLz6iWEQA3X7CfqiwzQOqHmxLW8I8XPgLhKaaGSBb_z1AQ");
-
-            // The actual GET call
-            var response = await client.GetAsync("https://api.fhict.nl/schedule/me?start=7&startLastMonday=true");
-            var data = JObject.Parse(await response.Content.ReadAsStringAsync());
-
-            var title = (string)data["title"];
-
-            ViewData["data"] = data;
-            ViewData["title"] = title;
-
 
             return View();
         }
 
-        [Authorize]
         public ActionResult Canvas()
         {
             var user = User as ClaimsPrincipal;
@@ -101,11 +62,20 @@ namespace Simplified_School_Portal.Controllers
 
         public async Task<ActionResult> Lesrooster()
         {
-            int loopcount = 0;
+            // First, see if the user is already connected
+            var authToken = GetAuthTokenFromSession();
+
+            // If the user isn't connected, redirect to the authorisation page
+            if (string.IsNullOrEmpty(authToken))
+            {
+                lastAction = "Lesrooster";
+                return Redirect(host + "?client_id=i387766-simplified&scope=fhict fhict_personal openid profile email roles&response_type=code&redirect_uri=" + HttpUtility.HtmlEncode("https://localhost:44363/StandardServices/Callback"));
+            }
+
             List<Course> courses = new List<Course>();
 
             var client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IlZickNEN1NyWFhSVDYzYVVpbktPZm11cl9xcyIsImtpZCI6IlZickNEN1NyWFhSVDYzYVVpbktPZm11cl9xcyJ9.eyJpc3MiOiJodHRwczovL2lkZW50aXR5LmZoaWN0Lm5sIiwiYXVkIjoiaHR0cHM6Ly9pZGVudGl0eS5maGljdC5ubC9yZXNvdXJjZXMiLCJleHAiOjE1MjU3NzY2NzgsIm5iZiI6MTUyNTc2OTQ3OCwiY2xpZW50X2lkIjoiYXBpLWNsaWVudCIsInVybjpubC5maGljdDp0cnVzdGVkX2NsaWVudCI6InRydWUiLCJzY29wZSI6WyJvcGVuaWQiLCJwcm9maWxlIiwiZW1haWwiLCJmaGljdCIsImZoaWN0X3BlcnNvbmFsIiwiZmhpY3RfbG9jYXRpb24iXSwic3ViIjoiYWFhYTQ3ZGEtZGU2OS00YmMwLTk0NjktMDA4NDU2MTI4YTZiIiwiYXV0aF90aW1lIjoxNTI1NzY4MTcxLCJpZHAiOiJmaGljdC1zc28iLCJyb2xlIjpbInVzZXIiLCJzdHVkZW50Il0sInVwbiI6IkkzODc3NjZAZmhpY3QubmwiLCJuYW1lIjoiU2FnaXMsVG9iaWFzIFQuRy5NLiIsImVtYWlsIjoidC5zYWdpc0BzdHVkZW50LmZvbnR5cy5ubCIsInVybjpubC5maGljdDpzY2hlZHVsZSI6ImNsYXNzfFMyMiIsImZvbnR5c191cG4iOiIzODc3NjZAc3R1ZGVudC5mb250eXMubmwiLCJhbXIiOlsiZXh0ZXJuYWwiXX0.cA8hzc0CZJma-8nWST4zLEdRKQys6a0OO8Mfpj4fB3ZpFRByEkodu2h8RNuPs9_LD0NXzeFnD5bM_5-NJSx27YeYaATeAMeeOwJ6qJbDX0DcOISEkY7seS1CfXfD3NF0o8C8ybqjarBLxTu7FNcoT0jqlrxTUwXTVGw5OtjPH58qtJiP4so37gKssQgoNSOz3ZexBl88rFBpQDkWErJvPwT9fsiOdpKN2S7GJM1HrHsc8-6Eo8UxdG1jKr-UooEJeOz6GFTni8J4QR6LBA7vf63qN8kqqwtvqOLK4f48WEjDhz8j3Gg6fX31SHIAbG9sx0bQhGc88rXe54rCLrfaGA");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
 
             // The actual GET call
             var response = await client.GetAsync("https://api.fhict.nl/schedule/me?days=7&startLastMonday=true");
@@ -162,6 +132,28 @@ namespace Simplified_School_Portal.Controllers
         public ActionResult ServiceRequest()
         {
             return View();
+        }
+
+        public async Task<ActionResult> Callback()
+        {
+            // If the authorisation process returns a code, exchange it for an access token
+            string currentUrl = Request.Url.ToString();
+
+            if (currentUrl.Contains("code"))
+            {
+                try
+                {
+                    var code = Request.QueryString["code"];
+                    var authToken = await GetTokenFromCode(code);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    Console.WriteLine(ex.StackTrace);
+                }
+            }
+
+            return RedirectToAction(lastAction);
         }
 
         public async Task<ActionResult> AuthorizationCodeCallback()
@@ -236,56 +228,60 @@ namespace Simplified_School_Portal.Controllers
             {
                 new KeyValuePair<string, string>("grant_type", "authorization_code"),
                 new KeyValuePair<string, string>("code", code),
-                new KeyValuePair<string, string>("redirect_uri", "http://localhost:54680/StandardServices/Studentenplein"),
+                new KeyValuePair<string, string>("redirect_uri", "https://localhost:44363/StandardServices/Callback"),
                 new KeyValuePair<string, string>("client_id", "i387766-simplified"),
                 new KeyValuePair<string, string>("client_secret", "Qfl45x6l38lOdiaMZE14l82RmIc3D3WG5IptSjJG")
             });
 
-            /* Extra auth doesn't seem to be needed on this POST call
-            var basicAuth = Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes("6220730c-d0e4-4fde-af3d-5ffgdca94e22:BC2GlOXcBXof56PSR8CA0TB6tHdlj3DLPEQ8hwf87kI"));
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", basicAuth);
-            */
-
             // The actual POST request
             var response = await client.PostAsync("https://identity.fhict.nl/connect/token", content);
             var token = JObject.Parse(await response.Content.ReadAsStringAsync())["access_token"].ToString();
+            var expirationTime = JObject.Parse(await response.Content.ReadAsStringAsync())["expires_in"].ToString();
 
             // Store the token in a cookie
-            var expirationTime = JObject.Parse(await response.Content.ReadAsStringAsync())["expires_in"].ToString();
+            DateTime expiredate = DateTime.Now.AddMinutes(double.Parse(expirationTime));
 
             HttpCookie cookie = new HttpCookie("token");
             cookie.Value = token.ToString();
-            //cookie.Expires = DateTime.Now.AddMinutes(Double.Parse(expirationTime));
+            cookie.Expires = expiredate;
 
             Response.Cookies.Add(cookie);
+
+            // Add userinfo to another cookie
+            await GetUserInfo(token, expiredate);
 
             // Finally return the token
             return token;
         }
 
         // Receive some basic information
-        private async Task<JObject> GetUserInfo(string accessToken)
+        private async Task GetUserInfo(string accessToken, DateTime expirationDate)
         {
             // Set up a GET call
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
             // The actual GET call
-            var response = await client.GetAsync("https://api.fhict.nl/schedule/me");
-            return JObject.Parse(await response.Content.ReadAsStringAsync());
+            var response = await client.GetAsync("https://identity.fhict.nl/connect/userinfo");
+
+            // Parse json and store it in a cookie
+            var name = JObject.Parse(await response.Content.ReadAsStringAsync())["name"].ToString();
+            HttpCookie usercookie = new HttpCookie("usercookie");
+            usercookie.Value = name;
+            usercookie.Expires = expirationDate;
+
+            Response.Cookies.Add(usercookie);
+
+            return;
         }
+
 
         private string GetAuthTokenFromSession()
         {
-            //TODO: Session handeling
-
-            HttpCookie myCookie = new HttpCookie("token");
-            myCookie.Value = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IlZickNEN1NyWFhSVDYzYVVpbktPZm11cl9xcyIsImtpZCI6IlZickNEN1NyWFhSVDYzYVVpbktPZm11cl9xcyJ9.eyJpc3MiOiJodHRwczovL2lkZW50aXR5LmZoaWN0Lm5sIiwiYXVkIjoiaHR0cHM6Ly9pZGVudGl0eS5maGljdC5ubC9yZXNvdXJjZXMiLCJleHAiOjE1MjU3MDA2NjksIm5iZiI6MTUyNTY5MzQ2OSwiY2xpZW50X2lkIjoiYXBpLWNsaWVudCIsInVybjpubC5maGljdDp0cnVzdGVkX2NsaWVudCI6InRydWUiLCJzY29wZSI6WyJvcGVuaWQiLCJwcm9maWxlIiwiZW1haWwiLCJmaGljdCIsImZoaWN0X3BlcnNvbmFsIiwiZmhpY3RfbG9jYXRpb24iXSwic3ViIjoiYWFhYTQ3ZGEtZGU2OS00YmMwLTk0NjktMDA4NDU2MTI4YTZiIiwiYXV0aF90aW1lIjoxNTI1NjkxNzIwLCJpZHAiOiJmaGljdC1zc28iLCJyb2xlIjpbInVzZXIiLCJzdHVkZW50Il0sInVwbiI6IkkzODc3NjZAZmhpY3QubmwiLCJuYW1lIjoiU2FnaXMsVG9iaWFzIFQuRy5NLiIsImVtYWlsIjoidC5zYWdpc0BzdHVkZW50LmZvbnR5cy5ubCIsInVybjpubC5maGljdDpzY2hlZHVsZSI6ImNsYXNzfFMyMiIsImZvbnR5c191cG4iOiIzODc3NjZAc3R1ZGVudC5mb250eXMubmwiLCJhbXIiOlsiZXh0ZXJuYWwiXX0.bDSbv-HZeOvcYeiNu82YCrKuG4F70v8jfDzlsxxMOrrTJsnQoahoWWH-Mop_gFWOkZ1B8AxNYKEyBdXRis3smaFx_Ni1quJt5nUuKXu4DgMqVusxK25DIsFRf07d8Ttu1omQZmRWu5Pl9RSBTRnPGomPurznDr0Q1SyHYEa-cY3NFfPO7A4CcdWryzgEeDEt4ibLq6NxUW0dPdXMRLCq0QeC1iDqbGV3xei7h9KlYG6tsbBuPF6IKJc1vURWIZyY310MMvMSSxAMzyBGmksjxyVoSowkc4Mf6KIvLc8sVtC4fFVUCDoGk5JN1T0EDGhGtMxOeQLxP9eFn2tm_7BKqQ";
-            Response.Cookies.Add(myCookie);
-
-            if (myCookie.Value != null)
+            if (HttpContext.Request.Cookies.AllKeys.Contains("token"))
             {
-                return myCookie.Value;
+                HttpCookie cookie = HttpContext.Request.Cookies["token"];
+                return cookie.Value;
             }
             else
             {

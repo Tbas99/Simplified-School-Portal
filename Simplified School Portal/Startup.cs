@@ -2,6 +2,7 @@
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OpenIdConnect;
 using Owin;
+using System;
 using System.IdentityModel.Tokens;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -39,9 +40,9 @@ namespace Simplified_School_Portal
             {
                 ClientId = "i387766-simplified",
                 Authority = "https://identity.fhict.nl/connect/authorize",
-                RedirectUri = "https://localhost:44363/StandardServices​",
+                RedirectUri = Uri.EscapeUriString("https://localhost:44363/​"),
                 ResponseType = "code",
-                Scope = "fhict fhict_personal openid email",
+                Scope = "fhict, fhict_personal, openid, profile, email, roles",
 
                 UseTokenLifetime = true,
                 SignInAsAuthenticationType = "Cookies"

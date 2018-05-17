@@ -289,6 +289,12 @@ namespace Simplified_School_Portal.Controllers
             }
         }
 
+        public Task log_out()
+        {
+
+            return null;
+        }
+
         // function to extract date-time from a single string provided by the API.
         private string extractCorrectOutput(string unformattedTimeDate, string desiredOutput)
         {

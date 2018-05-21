@@ -6973,6 +6973,10 @@ form.go-right input:focus + label, form.go-right textarea:focus + label {
     margin: 0;
 }
 
+.smallMarginBot {
+    margin-bottom: 25px
+}
+
 /* Equal height columns */
 .equalHeight {
     display: -webkit-box;
@@ -7080,4 +7084,23 @@ form.go-right input:focus + label, form.go-right textarea:focus + label {
 .selectorBoxes {
     background: white;
     color: #555555;
+}
+
+/* For info blocks on studentenplein */
+.info_block {
+    padding: 10px;
+    background-color: #545454;
+}
+
+
+/* Gridstack tweaks */
+.pagelayout {
+    background: #2c3e50;
+    color: #fff;
+}
+
+.grid-stack-item-content {
+    background: white;
+    color: #2c3e50;
+    text-align: center;
 }

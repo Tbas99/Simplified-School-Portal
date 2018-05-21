@@ -21,7 +21,7 @@
     @if (Request.Cookies.AllKeys.Contains("usercookie"))
     {
         <li class="hoverEffect"><a href="">Hello, @Request.Cookies["usercookie"].Value!</a></li>
-        <li class="hoverEffect"><a href="@Url.Action("Log_out", "StandardServices)">Log out</a></li>
+        <li class="hoverEffect">@Html.ActionLink("Log out", "log_out", "StandardServices")</li>
     }
     else
     {

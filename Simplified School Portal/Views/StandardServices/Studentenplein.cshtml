@@ -2,23 +2,112 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div>
-    <h1>Studentenplein</h1>
-    <p>
-        Hier worden alle veelbezochte links van het studentenplein gepost.
-    </p>
-    <p>@ViewData["token"]</p>
+<!-- Keep it off the top. -->
+<div class="col-xs-12" style="height:50px;"></div>
 
-    <input type="button" id="button-info" />
-    <div class="col-md-6" id="info">
-        <h2>@ViewData["title"]</h2>
+<div class="container">
+    <div class="row smallMarginBot equalHeight">
+        <div class="col-md-4">
+            <div class="info_block text-center cliente fullHeight frontpageHoverEffect">
+                <h3 class="cleanMargin smallMarginBot">Algemeen</h3>
+                <div class="btn-group-vertical fullWidth">
+                    <a href="https://portal.fhict.nl/Studentenplein/SitePages/AtmZ.aspx" class="btn btn-primary btn-block" target="_blank">A t/m Z</a>
+                    <a href="https://survivalgidsfontysict.nl/" class=" btn btn-primary" target="_blank">HBO-ICT Survivalgids</a>
+                    <a href="https://keuzegidsfontysict.nl/" class="btn btn-primary" target="_blank">HBO-ICT Keuzegids</a>
+                    <a href="http://www.studyabroad.iris.fhict.nl/" class="btn btn-primary" target="_blank">Study Abroad</a>
+                    <a href="https://portal.fhict.nl/Studentenplein/SitePages/Bereikbaarheid.aspx" class="btn btn-primary" target="_blank">Contact Studentenbureau</a>
+                    <a href="https://sp.app.fhict.nl/overzichtmedewerkers" class="btn btn-primary" target="_blank">Overzicht medewerkers</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="info_block text-center cliente fullHeight frontpageHoverEffect">
+                <h3 class="cleanMargin smallMarginBot">Roosters & Klassen</h3>
+                <div class="btn-group-vertical fullWidth">
+                    <a href="https://portal.fhict.nl/Studentenplein/Klassenlijsten/Forms/AllItems.aspx" class="btn btn-primary" target="_blank">Klassenlijsten</a>
+                    <a href="https://apps.fhict.nl/Roosters/HuidigKwartaal/default.htm" class="btn btn-primary" target="_blank">Lesroosters</a>
+                    <a href="https://portal.fhict.nl/Studentenplein/Jaaragenda/Forms/All%20Documents.aspx" class="btn btn-primary" target="_blank">Jaaragenda</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="info_block text-center cliente fullHeight frontpageHoverEffect">
+                <h3 class="cleanMargin smallMarginBot">Studievoortgang</h3>
+                <div class="btn-group-vertical fullWidth">
+                    <a href="http://progresswww.nl/fontys" class="btn btn-primary" target="_blank">Progresswww</a>
+                    <a href="https://portal.fhict.nl/Studentenplein/Documenten%20rondom%20studievoortgang/Home.aspx" class="btn btn-primary" target="_blank">Examencommissie/OER contact</a>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-6">
-        <p>@ViewData["days"]</p>
-    </div>
-    <div class="col-md-6" id="div1">
-        <p>@ViewData["data"]</p>
-    </div>
+    <div class="row smallMarginBot equalHeight">
+        <div class="col-md-4">
+            <div class="info_block text-center cliente fullHeight frontpageHoverEffect">
+                <h3 class="cleanMargin smallMarginBot">Instroom/doorstroom</h3>
+                <div class="btn-group-vertical fullWidth">
+                    <a href="https://connect.fontys.nl/diensten/SV/Paginas/Betalen%20collegegelden.aspx" class="btn btn-primary" target="_blank">Collegegeld</a>
+                    <a href="https://portal.fhict.nl/WODoorstroom/SitePages/Home.aspx" class="btn btn-primary" target="_blank">WO Doorstroom</a>
+                </div>
+            </div>
+        </div>
 
+        <div class="col-md-4">
+            <div class="info_block text-center cliente fullHeight frontpageHoverEffect">
+                <h3 class="cleanMargin smallMarginBot">Werkomgeving</h3>
+                <div class="btn-group-vertical fullWidth">
+                    <a href="https://portal.fhict.nl/Werkgroepen/SitePages/Home.aspx" class="btn btn-primary" target="_blank">Werkgroepen</a>
+                    <a href="https://portal.fhict.nl/Studentenplein/SitePages/Versiebeheer.aspx" class="btn btn-primary" target="_blank">Versiebeheer</a>
+                    <a href="https://fhict.instructure.com/" class="btn btn-primary" target="_blank">Canvas</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="info_block text-center cliente fullHeight frontpageHoverEffect">
+                <h3 class="cleanMargin smallMarginBot">Software</h3>
+                <div class="btn-group-vertical fullWidth">
+                    <a href="https://e5.onthehub.com/WebStore/Welcome.aspx?ws=f902784a-836f-e011-971f-0030487d8897" class="btn btn-primary" target="_blank"> MicrosoftDreamspark(Imagine)</a>
+                    <a href="https://desktop.fhict.nl/portal/webclient/index.html#" class="btn btn-primary" target="_blank">FHICT Online Werkplek</a>
+                    <a href="https://e5.onthehub.com/WebStore/Welcome.aspx?ws=857bd84b-368b-de11-a28c-003048c1b605" class="btn btn-primary" target="_blank">VMware Store</a>
+                    <a href="https://vdi.fhict.nl" class="btn btn-primary" target="_blank">VPN Anyconnect Windows/Linux/Macos</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row smallMarginBot equalHeight">
+        <div class="col-md-4">
+            <div class="info_block text-center cliente fullHeight frontpageHoverEffect">
+                <h3 class="cleanMargin smallMarginBot">ICT Support</h3>
+                <div class="btn-group-vertical fullWidth">
+                    <a href="https://selfservice.app.fhict.nl/" class="btn btn-primary" target="_blank">Selfservice Portal</a>
+                    <a href="https://portal.fhict.nl/Studentenplein/ISSD/SitePages/Home.aspx" class="btn btn-primary" target="_blank">ISSD</a>
+                    <a href="https://portal.fhict.nl/Studentenplein/ISSD/Shared%20Documents/Welkom_bij_FHICT.pdf" class="btn btn-primary" target="_blank">ICT middelen bij FHICT</a>
+                    <a href="https://portal.fhict.nl/Studentenplein/Handleidingen/Forms/AllItems.aspx" class="btn btn-primary" target="_blank">Diverse handleidingen</a>
+                    <a href="https://login.fhict.nl/adfs/portal/updatepassword" class="btn btn-primary" target="_blank">Change password (I-account)</a>
+                    <a href="https://www.fontys.nl/wwselfservice/ChangePassword.aspx" class="btn btn-primary" target="_blank">Change password (PCN)</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="info_block text-center cliente fullHeight frontpageHoverEffect">
+                <h3 class="cleanMargin smallMarginBot">Ondersteuning</h3>
+                <div class="btn-group-vertical fullWidth">
+                    <a href="https://i888557.iris.fhict.nl/studentplus" class="btn btn-primary" target="_blank">Menukaart Student+ en studentvoorzieningen</a>
+                    <a href="https://portal.fhict.nl/Studentenplein/ToolboxTaal/_layouts/15/start.aspx" class="btn btn-primary" target="_blank">Toolbox Taal</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="info_block text-center cliente fullHeight frontpageHoverEffect">
+                <h3 class="cleanMargin smallMarginBot">Interne communicatie</h3>
+                <div class="btn-group-vertical fullWidth">
+                    <a href="https://portal.fhict.nl/Studentenplein/GOC/SitePages/Home.aspx" class="btn btn-primary" target="_blank">GOC (OpleidingsCommissie)</a>
+                    <a href="https://portal.fhict.nl/Lists/Directie%20besluiten" class="btn btn-primary" target="_blank">Directiebesluiten</a>
+                    <a href="https://portal.fhict.nl/Kwaliteit" class="btn btn-primary" target="_blank">Kwaliteitszorg</a>
+                    <a href="https://portal.fhict.nl/Kwaliteit/SitePages/Klachten%20en%20ideeen.aspx" class="btn btn-primary" target="_blank">Ideeën/Klachten</a>
+                    <a href="https://portal.fhict.nl/Studentenplein/PR-Studententeam/Pages/Home.aspx" class="btn btn-primary" target="_blank">PR-Studententeam</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 

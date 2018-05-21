@@ -25,6 +25,7 @@ namespace Simplified_School_Portal.Controllers
     public class StandardServicesController : Controller
     {
         private string host = "https://identity.fhict.nl/connect/authorize";
+        private string canvasHost = "https://fhict.instructure.com/login/oauth2/auth";
         private string lastAction = "";
 
         // GET: StandardServices
@@ -41,21 +42,34 @@ namespace Simplified_School_Portal.Controllers
             // If the user isn't connected, redirect to the authorisation page
             if (string.IsNullOrEmpty(authToken))
             {
+                lastAction = "Studentenplein";
                 return Redirect(host + "?client_id=i387766-simplified&scope=fhict fhict_personal openid profile email roles&response_type=code&redirect_uri=" + HttpUtility.HtmlEncode("https://localhost:44363/StandardServices/Callback"));
             }
 
             return View();
         }
 
-        public ActionResult Canvas()
+        public async Task<ActionResult> Canvas()
         {
-            var user = User as ClaimsPrincipal;
-            var token = user.FindFirst("access_token");
+            /*
+            // First, see if the user is already connected
+            var authToken = GetCanvasAuthTokenFromSession();
 
-            if (token != null)
+            // If the user isn't connected, redirect to the authorisation page
+            if (string.IsNullOrEmpty(authToken))
             {
-                ViewData["access_token"] = token.Value;
+                lastAction = "Canvas";
+                return Redirect(canvasHost + "?client_id=i387766-simplified&response_type=code&redirect_uri=" + HttpUtility.HtmlEncode("https://localhost:44363/StandardServices/Callback"));
             }
+
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
+
+            // The actual GET call
+            var response = await client.GetAsync("https://api.fhict.nl/canvas/courses/me");
+            var data = JObject.Parse(await response.Content.ReadAsStringAsync());
+            var dataArray = (JArray)data["data"];
+            */
 
             return View();
         }
@@ -153,71 +167,8 @@ namespace Simplified_School_Portal.Controllers
                 }
             }
 
-            return RedirectToAction(lastAction);
+            return RedirectToAction(lastAction, "StandardServices");
         }
-
-        public async Task<ActionResult> AuthorizationCodeCallback()
-        {
-            // received authorization code from authorization server
-            string[] codes = Request.Params.GetValues("code");
-            var authorizationCode = "";
-            if (codes.Length > 0)
-                authorizationCode = codes[0];
-
-            // exchange authorization code at authorization server for an access and refresh token
-            Dictionary<string, string> post = null;
-            post = new Dictionary<string, string>
-            {
-                {"grant_type", "authorization_code"},
-                {"code", authorizationCode},
-                {"redirect_uri", "_redirectUrl"},
-                {"client_id", "i387766-simplified"},
-                {"client_secret", "Qfl45x6l38lOdiaMZE14l82RmIc3D3WG5IptSjJG"}
-            };
-
-            var client = new HttpClient();
-            var postContent = new FormUrlEncodedContent(post);
-            var response = await client.PostAsync("https://identity.fhict.nl/connect/token", postContent);
-            var content = await response.Content.ReadAsStringAsync();
-
-            // received tokens from authorization server
-            var json = JObject.Parse(content);
-            string _accessToken = json["access_token"].ToString();
-            string _authorizationScheme = json["token_type"].ToString();
-            string _expiresIn = json["expires_in"].ToString();
-            if (json["refresh_token"] != null)
-            {
-                string _refreshToken = json["refresh_token"].ToString();
-            }
-
-            //SignIn with Token, SignOut and create new identity for SignIn
-            Request.Headers.Add("Authorization", _authorizationScheme + " " + _accessToken);
-            var ctx = Request.GetOwinContext();
-            var authenticateResult = await ctx.Authentication.AuthenticateAsync(DefaultAuthenticationTypes.ExternalBearer);
-            ctx.Authentication.SignOut(DefaultAuthenticationTypes.ExternalBearer);
-            var applicationCookieIdentity = new ClaimsIdentity(authenticateResult.Identity.Claims, DefaultAuthenticationTypes.ApplicationCookie);
-            ctx.Authentication.SignIn(applicationCookieIdentity);
-
-            var ctxUser = ctx.Authentication.User;
-            var user = Request.RequestContext.HttpContext.User;
-
-            //redirect back to the view which required authentication
-            string decodedUrl = "";
-            if (!string.IsNullOrEmpty("_returnUrl"))
-            {
-                decodedUrl = Server.UrlDecode("_returnUrl");
-            }
-
-            if (Url.IsLocalUrl(decodedUrl))
-            {
-                return Redirect(decodedUrl);
-            }
-            else
-            {
-                return RedirectToAction("Index", "Home");
-            }
-        }
-
 
         // Code that transforms the given "code" into an access token
         private async Task<string> GetTokenFromCode(string code)
@@ -289,10 +240,30 @@ namespace Simplified_School_Portal.Controllers
             }
         }
 
-        public Task log_out()
+        private string GetCanvasAuthTokenFromSession()
         {
+            if (HttpContext.Request.Cookies.AllKeys.Contains("canvasToken"))
+            {
+                HttpCookie cookie = HttpContext.Request.Cookies["canvasToken"];
+                return cookie.Value;
+            }
+            else
+            {
+                return "";
+            }
+        }
 
-            return null;
+        public RedirectToRouteResult log_out()
+        {
+            // Check for usercookie value, if it has value, also delete access token.
+            // No second if statement for access token, because usercookie wouldn't exist without access token.
+            if (Request.Cookies["usercookie"].Value != null)
+            {
+                Response.Cookies["usercookie"].Expires = DateTime.Now.AddDays(-1);
+                Response.Cookies["token"].Expires = DateTime.Now.AddDays(-1);
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         // function to extract date-time from a single string provided by the API.

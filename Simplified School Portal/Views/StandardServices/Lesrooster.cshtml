@@ -50,11 +50,12 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
-            @dayView("maandag")
-            @dayView("dinsdag")
-            @dayView("woensdag")
-            @dayView("donderdag")
-            @dayView("vrijdag")
+            <!-- Depending on the system settings, it might bug out and won't detect the given parameters. -->
+            @dayView("Monday")
+            @dayView("Tuesday")
+            @dayView("Wednesday")
+            @dayView("Thursday")
+            @dayView("Friday")
         </div>
     </div>
 </div>

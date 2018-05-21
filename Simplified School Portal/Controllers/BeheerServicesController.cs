@@ -119,6 +119,12 @@ namespace Simplified_School_Portal.Controllers
             return View("NewService", listCalls());
         }
 
+        [HttpGet]
+        public PartialViewResult _CreatePagePartial(API_package a)
+        {
+            return PartialView();
+        }
+
         [Authorize(Roles = "Admin")]
         public ActionResult Statistics()
         {

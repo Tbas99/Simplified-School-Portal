@@ -5,12 +5,24 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-8">
-            <h2>Create a new service</h2>
-
-
+        <div class="col-md-6">
+            <h2 class="text-center">Create a new service-page</h2>
+            <div class="pagelayout">
+                <div class="grid-stack">
+                    <div class="grid-stack-item"
+                         data-gs-x="0" data-gs-y="0"
+                         data-gs-width="4" data-gs-height="2">
+                        <div class="grid-stack-item-content">2</div>
+                    </div>
+                    <div class="grid-stack-item"
+                         data-gs-x="4" data-gs-y="0"
+                         data-gs-width="4" data-gs-height="4">
+                        <div class="grid-stack-item-content">4</div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 col-sm-offset-2">
             <h2 class="text-center">Create a new API Package</h2>
             @using (Html.BeginForm("NewService", "BeheerServices", FormMethod.Post, new { @class = "col-md-12 go-right formTweaks cleanMargin" }))
             {
@@ -56,7 +68,7 @@
                     };
                 </script>
             }
-            <button class="btn btn-primary btn-block" id='createGetCall'>Create a new GET call</button>
+            <button class="btn btn-primary btn-block formTweaks" id='createGetCall'>Create a new GET call</button>
         </div>
     </div>
     <div id='GETcallModal' class="modal fade" data-url='@Url.Action("_APIcallPartial", "BeheerServices")'>

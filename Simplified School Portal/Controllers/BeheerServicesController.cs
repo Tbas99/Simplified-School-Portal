@@ -124,7 +124,14 @@ namespace Simplified_School_Portal.Controllers
         [HttpGet]
         public PartialViewResult _CreatePagePartial(API_package a)
         {
-            return PartialView();
+            List<API_package> packages = new List<API_package>();
+
+            foreach (API_package package in unitOfWork.Api_packageRepository.dbSet.ToList())
+            {
+                packages.Add(package);
+            }
+
+            return PartialView(packages);
         }
 
         [Authorize(Roles = "Admin")]

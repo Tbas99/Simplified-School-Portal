@@ -1,3 +1,21 @@
-﻿@model Simplified_School_Portal.Models.API_package
+﻿@model Simplified_School_Portal.DAL.UnitOfWork
 
 @* Todo: create grid-stack-items for each API package available *@
+<div class="pagelayout">
+    <div class="grid-stack">
+        @foreach (var package in Model)
+        {
+
+        }
+        <div class="grid-stack-item"
+             data-gs-x="0" data-gs-y="0"
+             data-gs-width="4" data-gs-height="2">
+            <div class="grid-stack-item-content">2</div>
+        </div>
+        <div class="grid-stack-item"
+             data-gs-x="4" data-gs-y="0"
+             data-gs-width="4" data-gs-height="4">
+            <div class="grid-stack-item-content">4</div>
+        </div>
+    </div>
+</div>

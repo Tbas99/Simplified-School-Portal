@@ -5656,7 +5656,7 @@ body.modal-open,
 }
 
 .modal-dialog {
-  z-index: 1050;
+  z-index: 1040;
   width: auto;
   padding: 10px;
   margin-right: auto;
@@ -5691,7 +5691,7 @@ body.modal-open,
 }
 
 .modal-backdrop.in {
-  opacity: 0.5;
+  opacity: 0.5 !important;
   filter: alpha(opacity=50);
 }
 

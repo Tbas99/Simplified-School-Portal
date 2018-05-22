@@ -19,6 +19,7 @@ using System.Security.Claims;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using Simplified_School_Portal.Models;
+using Simplified_School_Portal.DAL;
 
 namespace Simplified_School_Portal.Controllers
 {
@@ -26,7 +27,7 @@ namespace Simplified_School_Portal.Controllers
     {
         private string host = "https://identity.fhict.nl/connect/authorize";
         private string canvasHost = "https://fhict.instructure.com/login/oauth2/auth";
-        private string lastAction = "";
+        private static string lastAction = "";
 
         // GET: StandardServices
         public ActionResult Index()

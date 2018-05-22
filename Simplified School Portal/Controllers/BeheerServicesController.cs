@@ -4,13 +4,14 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Simplified_School_Portal.Models;
+using Simplified_School_Portal.DAL;
 using System.Text;
 
 namespace Simplified_School_Portal.Controllers
 {
     public class BeheerServicesController : Controller
     {
-        private SSPDatabaseEntities db = new SSPDatabaseEntities();
+        private UnitOfWork unitOfWork = new UnitOfWork();
 
         // GET: BeheerServices
         public ActionResult Index()
@@ -26,7 +27,7 @@ namespace Simplified_School_Portal.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult Overview(string searchString, string searchDay, string searchWeek)
         {
-            var info_requests = from m in db.Info_request select m;
+            var info_requests = from m in unitOfWork.Info_requestRepository.dbSet.ToList() select m;
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -50,7 +51,7 @@ namespace Simplified_School_Portal.Controllers
             else
             {
                 ModelState.Clear();
-                return View(db.Info_request.ToList());
+                return View(unitOfWork.Info_requestRepository.dbSet.ToList());
             }
         }
 
@@ -77,7 +78,7 @@ namespace Simplified_School_Portal.Controllers
                 package.Package_url = m.package_url;
 
                 // Search for calls
-                foreach (Package_call call in db.Package_call)
+                foreach (Package_call call in unitOfWork.Package_callRepository.dbSet.ToList())
                 {
 
                     if (SelectedCalls.Contains(call.Package_callId))
@@ -87,8 +88,8 @@ namespace Simplified_School_Portal.Controllers
                 }
 
                 // Finally add it to the db
-                db.API_package.Add(package);
-                db.SaveChanges();
+                unitOfWork.Api_packageRepository.Insert(package);
+                unitOfWork.Save();
             }
 
             // Cleanup
@@ -113,8 +114,9 @@ namespace Simplified_School_Portal.Controllers
             call.Call_verificationNeeded = a.call_auth_needed;
             call.Call_type = a.call_type;
 
-            db.Package_call.Add(call);
-            db.SaveChanges();
+            // Finally add it to the db
+            unitOfWork.Package_callRepository.Insert(call);
+            unitOfWork.Save();
 
             return View("NewService", listCalls());
         }
@@ -135,7 +137,7 @@ namespace Simplified_School_Portal.Controllers
         {
             List<SelectListItem> AllCalls = new List<SelectListItem>();
 
-            foreach (Package_call call in db.Package_call)
+            foreach (Package_call call in unitOfWork.Package_callRepository.dbSet.ToList())
             {
                 SelectListItem selectList = new SelectListItem()
                 {

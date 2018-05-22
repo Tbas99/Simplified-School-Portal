@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Net.Mail;
 using Simplified_School_Portal.Models;
+using Simplified_School_Portal.DAL;
 using System.Threading;
 using System.Text;
 
@@ -14,6 +15,8 @@ namespace Simplified_School_Portal.Controllers
     public class HomeController : Controller
     {
         private SSPDatabaseEntities db = new SSPDatabaseEntities();
+
+        private UnitOfWork unitOfWork = new UnitOfWork();
 
         public ActionResult Index()
         {
@@ -65,9 +68,12 @@ namespace Simplified_School_Portal.Controllers
             request.Request_date = DateTime.Now;
             request.Description = m.Description;
 
+            unitOfWork.Info_requestRepository.Insert(request);
+            unitOfWork.Save();
+
             // Finally save it to the database
-            db.Info_request.Add(request);
-            db.SaveChanges();
+            //db.Info_request.Add(request);
+            //db.SaveChanges();
             
 
             // Finalization of the message

@@ -6977,7 +6977,11 @@ form.go-right input:focus + label, form.go-right textarea:focus + label {
 }
 
 .smallMarginBot {
-    margin-bottom: 25px
+    margin-bottom: 25px;
+}
+
+.smallPaddingOverall {
+    padding: 20px;
 }
 
 /* Equal height columns */
@@ -7106,4 +7110,36 @@ form.go-right input:focus + label, form.go-right textarea:focus + label {
     background: white;
     color: #2c3e50;
     text-align: center;
+}
+
+/* Tooltip text */
+.smallrow .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    /* Position the tooltip text - see examples below! */
+    top: -5px;
+    right: 105%;
+    /* Fade in tooltip - takes 1 second to go from 0% to 100% opac: */
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.smallrow:hover .tooltiptext {
+    visibility: visible;
+}
+
+.smallrow:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+.smallrowTweaks {
+    padding-bottom: 10px;
+    padding-top: 3px;
 }

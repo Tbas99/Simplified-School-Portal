@@ -21,12 +21,9 @@
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort>44363</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication>
-    </IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>
-    </IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>
-    </IISExpressUseClassicPipelineMode>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -252,6 +249,8 @@
     </Compile>
     <Compile Include="Models\Callmodel.cs" />
     <Compile Include="Models\Course.cs" />
+    <Compile Include="Models\CreatePagemodel.cs" />
+    <Compile Include="Models\CreatePagemodelJson.cs" />
     <Compile Include="Models\Feature_request.cs">
       <DependentUpon>StoreDB.tt</DependentUpon>
     </Compile>

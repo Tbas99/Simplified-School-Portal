@@ -69,7 +69,12 @@
 
     <script type="text/javascript">
         $(function () {
-            $('.grid-stack').gridstack();
+            var options = {
+                cellHeight: 80,
+                verticalMargin: 10,
+                disableResize: true
+            };
+            $('.grid-stack').gridstack(options);
         });
     </script>
 </body>

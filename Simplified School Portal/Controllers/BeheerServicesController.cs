@@ -6,6 +6,9 @@ using System.Web.Mvc;
 using Simplified_School_Portal.Models;
 using Simplified_School_Portal.DAL;
 using System.Text;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Web.Script.Serialization;
 
 namespace Simplified_School_Portal.Controllers
 {
@@ -58,6 +61,9 @@ namespace Simplified_School_Portal.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult NewService()
         {
+            // Pass model for partial view to viewdata:
+            ViewData["partialModel"] = unitOfWork.Api_packageRepository.dbSet.ToList();
+
             return View(listCalls());
         }
 
@@ -122,7 +128,7 @@ namespace Simplified_School_Portal.Controllers
         }
 
         [HttpGet]
-        public PartialViewResult _CreatePagePartial(API_package a)
+        public ActionResult _CreatePagePartial()
         {
             List<API_package> packages = new List<API_package>();
 
@@ -132,6 +138,18 @@ namespace Simplified_School_Portal.Controllers
             }
 
             return PartialView(packages);
+        }
+
+        [HttpPost]
+        public string savePage(string[] positions)
+        {
+            //some code
+            var json = positions;
+            var test = "";
+            CreatePagemodelJson obj = new JavaScriptSerializer().Deserialize<CreatePagemodelJson>(positions.ToString());
+            //var jsonObject = JsonConvert.DeserializeObject<CreatePagemodel>(positionsJson.ToString());
+
+            return "";
         }
 
         [Authorize(Roles = "Admin")]

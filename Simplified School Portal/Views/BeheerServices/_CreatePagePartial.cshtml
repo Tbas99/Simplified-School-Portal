@@ -1,21 +1,142 @@
-﻿@model Simplified_School_Portal.DAL.UnitOfWork
+﻿@model IEnumerable<Simplified_School_Portal.Models.API_package>
+@helper extractCalls(int api_packageId)
+{ 
+    foreach (var package in Model)
+    {
+        if (package.API_packageId == api_packageId)
+        {
+            foreach (var call in package.Package_call)
+            {
+                <p>@call.Call</p>
+            }
+        }
+    }
+}
 
 @* Todo: create grid-stack-items for each API package available *@
-<div class="pagelayout">
-    <div class="grid-stack">
-        @foreach (var package in Model)
-        {
-
-        }
-        <div class="grid-stack-item"
-             data-gs-x="0" data-gs-y="0"
-             data-gs-width="4" data-gs-height="2">
-            <div class="grid-stack-item-content">2</div>
+<div class="row">
+    <div class="col-md-4">
+        <div class="pagelayout selectApiPackage text-center">
+            <button class="btn btn-primary btn-block" onclick="saveData()">Publish Page</button>
+            @foreach (var package in Model)
+            {
+                <div class="smallrow smallrowTweaks">
+                    <span class="tooltiptext">@package.Package_description</span>
+                    <p>@package.Package_name</p>
+                    <button id="@package.API_packageId!-" class="btn glyphicon-minus min" value="@extractCalls(package.API_packageId)" onclick="removeWidget(this.id)"></button>
+                    <button id="@package.API_packageId!+" class="btn glyphicon-plus plus" value="@extractCalls(package.API_packageId)" onclick="addWidget(this.id, this.value)"></button>
+                </div>
+            }
         </div>
-        <div class="grid-stack-item"
-             data-gs-x="4" data-gs-y="0"
-             data-gs-width="4" data-gs-height="4">
-            <div class="grid-stack-item-content">4</div>
+    </div>
+    <div class="col-md-8">
+        <div class="pagelayout smallPaddingOverall">
+            <div class="grid-stack">
+                @*
+                @foreach (var package in Model)
+                {
+                    <div class="grid-stack-item"
+                         data-gs-x="0" data-gs-y="0"
+                         data-gs-width="4" data-gs-height="2">
+                        <div class="grid-stack-item-content">
+                            <p>@package.API_packageId</p>
+                            <p>@package.Package_name</p>
+                            <p>@package.Package_description</p>
+                            <p> Calls: </p>
+                            @foreach (var call in package.Package_call)
+                            {
+                                <p>@call.Call</p>
+                            }
+                        </div>
+                    </div>
+                }
+                *@
+            </div>
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    var widgetsActive = false;
+
+    function removeWidget(clicked_id) {
+        var grids = $('.grid-stack').data('gridstack');
+        if (widgetsActive) {
+            grids.removeAll();
+        }
+
+        // Roundup
+        widgetsActive = false;
+        showButton(clicked_id);
+    };
+
+    function addWidget(clicked_id, value) {
+        var extract = value.toString();
+        var find = '</p>';
+        var re = new RegExp(find, 'g');
+        var replaced = extract.replace(re, '');
+        var trimmed = replaced.replace(/ /g, '');
+        var extracted = trimmed.split("<p>");
+        var arrayLength = extracted.length;
+        for (var i = 0; i < arrayLength; i++) {
+            if (extracted[i] == "") {
+                continue;
+            }
+            else {
+                var html = "<div><div class=\"grid-stack-item-content\">" + extracted[i] + "<div/><div/>";
+                var el = $.parseHTML(html);
+                var grids = $('.grid-stack').data('gridstack');
+                grids.add_widget(el, 1, 1, 6, 2, true);
+            }
+        }
+
+        // Roundup
+        widgetsActive = true;
+        hideButton(clicked_id);
+    };
+
+    function hideButton(button_id) {
+        document.getElementById(button_id).style.display = 'none';
+    };
+
+    function showButton(button_id) {
+        var minus = button_id.toString();
+        var plusButton = minus.replace("!-", "!+");
+
+        document.getElementById(plusButton).style.display = 'inline-block';
+    };
+
+    function saveData() {
+        var pagePositions = [];
+
+        // Fill our array
+        $('.grid-stack-item.ui-draggable').each(function () {
+            var $this = $(this);
+            pagePositions.push({
+                x: $this.attr('data-gs-x'),
+                y: $this.attr('data-gs-y'),
+                w: $this.attr('data-gs-width'),
+                h: $this.attr('data-gs-height'),
+                content: $('.grid-stack-item-content', $this).html()
+            });
+        });
+
+        // Convert array to object
+        var pagePosData = toObject(pagePositions);
+
+        alert(pagePosData);
+
+        $.ajax({
+            type: "POST",
+            url: "savePage",
+            data: { positions: JSON.stringify(pagePosData) }
+        });
+    }
+
+    function toObject(arr) {
+        var rv = {};
+        for (var i = 0; i < arr.length; ++i)
+            if (arr[i] !== undefined) rv[i] = arr[i];
+        return rv;
+    }
+</script>

@@ -5,11 +5,11 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-8">
             <h2 class="text-center">Create a new service-page</h2>
-            @Html.Partial("_CreatePagePartial")
+            @Html.Partial("_CreatePagePartial", ViewData["partialModel"])
         </div>
-        <div class="col-md-4 col-sm-offset-2">
+        <div class="col-md-4">
             <h2 class="text-center">Create a new API Package</h2>
             @using (Html.BeginForm("NewService", "BeheerServices", FormMethod.Post, new { @class = "col-md-12 go-right formTweaks cleanMargin" }))
             {

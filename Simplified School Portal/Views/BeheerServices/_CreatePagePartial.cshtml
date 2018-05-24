@@ -121,22 +121,13 @@
             });
         });
 
-        // Convert array to object
-        var pagePosData = toObject(pagePositions);
-
-        alert(pagePosData);
+        alert(pagePositions);
 
         $.ajax({
             type: "POST",
             url: "savePage",
-            data: { positions: JSON.stringify(pagePosData) }
+            contentType: 'application/json',
+            data: JSON.stringify(pagePositions)
         });
-    }
-
-    function toObject(arr) {
-        var rv = {};
-        for (var i = 0; i < arr.length; ++i)
-            if (arr[i] !== undefined) rv[i] = arr[i];
-        return rv;
     }
 </script>

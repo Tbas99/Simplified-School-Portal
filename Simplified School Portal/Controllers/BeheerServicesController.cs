@@ -141,15 +141,104 @@ namespace Simplified_School_Portal.Controllers
         }
 
         [HttpPost]
-        public string savePage(string[] positions)
+        public ActionResult savePage(IEnumerable<Position> positions)
         {
-            //some code
-            var json = positions;
-            var test = "";
-            CreatePagemodelJson obj = new JavaScriptSerializer().Deserialize<CreatePagemodelJson>(positions.ToString());
-            //var jsonObject = JsonConvert.DeserializeObject<CreatePagemodel>(positionsJson.ToString());
+            // Variable to check (highest) row position
+            int highestY = 0;
+            int lastY = 0;
 
-            return "";
+            // First order the list
+            List<Position> orderedPositions = positions.OrderBy(o => o.y).ToList();
+
+            // Variables to calculate rows.
+            int rows = 0;
+            int nextRowNumber = 0;
+            List<int> rowNumbers = new List<int>();
+            int row = 0;
+            int lastRow = 0;
+
+
+            // Actual content in html
+            string totalHtmlContent = "";
+            string htmlContentLeft = "";
+            string htmlContentRight = "";
+
+            // htmlTemplates
+            string rowContentLeft = "";
+            string rowContentRight = "";
+            string newRow = "";
+
+            // Sort incoming content based on x and y positions
+
+            // Check how many rows the page contains
+            foreach (Position p in orderedPositions)
+            {
+                int y = Convert.ToInt16(p.y);
+
+                if (highestY < y)
+                {
+                    highestY = y;
+                }
+            }
+
+            // Calculate amount of rows
+            if (highestY != 0)
+            {
+                rows = (highestY / 2) + 1; // plus 1 because y=0 exists.
+            }
+            else
+            {
+                rows = 1;
+            }
+
+            // Add y coords to each row
+            for (int i = 0; i < rows; i++)
+            {
+                rowNumbers.Add(nextRowNumber);
+                nextRowNumber += 2;
+            }
+
+            foreach (Position p in orderedPositions)
+            {
+                // Convert the variables first
+                int y = Convert.ToInt16(p.y);
+                int x = Convert.ToInt16(p.x);
+
+                if (rowNumbers.IndexOf(y) <= lastRow)
+                {
+                    // Determine left or right position
+                    if (x < 3)
+                    {
+                        // Position left
+                        htmlContentLeft = p.content;
+                    }
+                    else if (x > 3)
+                    {
+                        // Position right
+                        htmlContentRight = p.content;
+                    }
+                    else
+                    {
+                        // TODO: Position middle
+
+                    }
+                }
+                else
+                {
+                    // append html row
+                    rowContentLeft = "<div class=\"col-md-6\"><p>" + htmlContentLeft + "</p></div>";
+                    rowContentRight = "<div class=\"col-md-6\"><p>" + htmlContentRight + "</p></div>";
+                    newRow = "<div class=\"row\">" + rowContentLeft + rowContentRight + "</div>";
+                    totalHtmlContent += newRow;
+                    lastRow++;
+                }
+            }
+
+            //some code
+            CustomView view = new CustomView();
+            view.htmlContent = totalHtmlContent;
+
+            return View(view);
         }
 
         [Authorize(Roles = "Admin")]

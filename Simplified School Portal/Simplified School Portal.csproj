@@ -21,12 +21,9 @@
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort>44363</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication>
-    </IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>
-    </IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>
-    </IISExpressUseClassicPipelineMode>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -102,6 +99,9 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RazorEngine, Version=3.10.0.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
+      <HintPath>packages\RazorEngine.3.10.0\lib\net45\RazorEngine.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -235,8 +235,10 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\StandardServicesController.cs" />
     <Compile Include="DAL\API_packageRepository.cs" />
+    <Compile Include="DAL\Feature_requestRepository.cs" />
     <Compile Include="DAL\GenericRepository.cs" />
     <Compile Include="DAL\IAPI_packageRepository.cs" />
+    <Compile Include="DAL\IFeature_requestRepository.cs" />
     <Compile Include="DAL\IInfo_requestRepository.cs" />
     <Compile Include="DAL\Info_requestRepository.cs" />
     <Compile Include="DAL\IPackage_callRepository.cs" />

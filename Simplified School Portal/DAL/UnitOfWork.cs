@@ -12,6 +12,7 @@ namespace Simplified_School_Portal.DAL
         private GenericRepository<API_package> api_packageRepository;
         private GenericRepository<Info_request> info_requestRepository;
         private GenericRepository<Package_call> package_callRepository;
+        private GenericRepository<Feature_request> feature_requestRepository;
 
         public GenericRepository<API_package> Api_packageRepository
         {
@@ -46,6 +47,18 @@ namespace Simplified_School_Portal.DAL
                     this.package_callRepository = new GenericRepository<Package_call>(context);
                 }
                 return package_callRepository;
+            }
+        }
+
+        public GenericRepository<Feature_request> Feature_requestRepository
+        {
+            get
+            {
+                if (this.feature_requestRepository == null)
+                {
+                    this.feature_requestRepository = new GenericRepository<Feature_request>(context);
+                }
+                return feature_requestRepository;
             }
         }
 

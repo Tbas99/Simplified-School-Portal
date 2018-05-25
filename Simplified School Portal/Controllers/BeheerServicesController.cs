@@ -9,6 +9,8 @@ using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Web.Script.Serialization;
+using RazorEngine;
+using RazorEngine.Templating;
 
 namespace Simplified_School_Portal.Controllers
 {
@@ -234,11 +236,13 @@ namespace Simplified_School_Portal.Controllers
                 }
             }
 
-            //some code
+            // Create a view with razor engine
+            string template = totalHtmlContent;
+            var result = Engine.Razor.RunCompile(template, "newPage", null, new { Name = "Max" });
             CustomView view = new CustomView();
             view.htmlContent = totalHtmlContent;
 
-            return View(view);
+            return View(result);
         }
 
         [Authorize(Roles = "Admin")]

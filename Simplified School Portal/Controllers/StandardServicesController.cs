@@ -275,7 +275,6 @@ namespace Simplified_School_Portal.Controllers
 
             string correctOutput = "";
 
-
             switch (desiredOutput)
             {
                 case "Date":

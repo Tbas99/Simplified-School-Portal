@@ -13,6 +13,7 @@
         <AssociationConnector Association="SSPDatabaseModel.FK_Request_Feature" />
         <AssociationConnector Association="SSPDatabaseModel.FK_Request_Info" />
         <AssociationConnector Association="SSPDatabaseModel.Mapping_package_call" />
+        <EntityTypeShape EntityType="SSPDatabaseModel.Pages" Width="1.5" PointX="8.875" PointY="3" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

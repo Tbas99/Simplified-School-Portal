@@ -13,6 +13,7 @@ namespace Simplified_School_Portal.DAL
         private GenericRepository<Info_request> info_requestRepository;
         private GenericRepository<Package_call> package_callRepository;
         private GenericRepository<Feature_request> feature_requestRepository;
+        private GenericRepository<Pages> pagesRepository;
 
         public GenericRepository<API_package> Api_packageRepository
         {
@@ -59,6 +60,18 @@ namespace Simplified_School_Portal.DAL
                     this.feature_requestRepository = new GenericRepository<Feature_request>(context);
                 }
                 return feature_requestRepository;
+            }
+        }
+
+        public GenericRepository<Pages> PagesRepository
+        {
+            get
+            {
+                if (this.pagesRepository == null)
+                {
+                    this.pagesRepository = new GenericRepository<Pages>(context);
+                }
+                return pagesRepository;
             }
         }
 

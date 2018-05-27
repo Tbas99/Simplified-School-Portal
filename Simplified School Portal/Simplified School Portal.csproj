@@ -242,7 +242,9 @@
     <Compile Include="DAL\IInfo_requestRepository.cs" />
     <Compile Include="DAL\Info_requestRepository.cs" />
     <Compile Include="DAL\IPackage_callRepository.cs" />
+    <Compile Include="DAL\IPagesRepository.cs" />
     <Compile Include="DAL\Package_callRepository.cs" />
+    <Compile Include="DAL\PagesRepository.cs" />
     <Compile Include="DAL\UnitOfWork.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -265,6 +267,9 @@
     <Compile Include="Models\Mailmodel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Package_call.cs">
+      <DependentUpon>StoreDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Pages.cs">
       <DependentUpon>StoreDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Position.cs" />
@@ -441,6 +446,8 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\BeheerServices\_CreatePagePartial.cshtml" />
+    <Content Include="Views\BeheerServices\Service.cshtml" />
+    <Content Include="Views\BeheerServices\SetActivePage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

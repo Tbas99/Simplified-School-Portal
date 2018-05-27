@@ -1,0 +1,26 @@
+﻿@model IEnumerable<Simplified_School_Portal.Models.Pages>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Keep it off the top. -->
+<div class="col-xs-12" style="height:50px;"></div>
+
+<div class="container">
+    <div class="row">
+        @foreach (var page in Model)
+        {
+            <div class="col-md-4">
+                <div class="pagelayout smallMarginBot">
+                    <h2 class="cleanMargin">@page.Title</h2>
+                    <button class="btn btn-block"></button>
+                    @if (page.Activepage == true)
+                    {
+                        <p>Active</p>
+                    }
+                    <input type="button" class="btn glyphicon-plus text-right" />
+                </div>
+            </div>
+        }
+    </div>
+</div>

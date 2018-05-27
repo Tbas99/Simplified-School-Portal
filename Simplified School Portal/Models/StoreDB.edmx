@@ -55,6 +55,18 @@ warning 6002: The table/view 'C:\USERS\TOBIAS\SOURCE\REPOS\SIMPLIFIED-SCHOOL-POR
           <Property Name="Call_verificationNeeded" Type="text" />
           <Property Name="Call_type" Type="text" Nullable="false" />
         </EntityType>
+        <EntityType Name="Pages">
+          <Key>
+            <PropertyRef Name="PageId" />
+          </Key>
+          <Property Name="PageId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ParentId" Type="uniqueidentifier" />
+          <Property Name="Title" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="Body" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ViewName" Type="nvarchar" MaxLength="250" />
+          <Property Name="ViewData" Type="varchar(max)" />
+          <Property Name="Activepage" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="Request">
           <Key>
             <PropertyRef Name="RequestId" />
@@ -116,8 +128,13 @@ warning 6002: The table/view 'C:\USERS\TOBIAS\SOURCE\REPOS\SIMPLIFIED-SCHOOL-POR
           <EntitySet Name="Feature_request" EntityType="Self.Feature_request" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Info_request" EntityType="Self.Info_request" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Package_call" EntityType="Self.Package_call" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pages" EntityType="Self.Pages" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Request" EntityType="Self.Request" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Mapping_package_call" EntityType="Self.Mapping_package_call" store:Type="Tables" Schema="dbo">
+          <EntitySet Name="Mapping_package_call" EntityType="Self.Mapping_package_call" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Mapping_package_call].[API_packageId] AS [API_packageId], 
+    [Mapping_package_call].[Package_callId] AS [Package_callId]
+    FROM [dbo].[Mapping_package_call] AS [Mapping_package_call]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_Mapping_ToAPIPackage" Association="Self.FK_Mapping_ToAPIPackage">
             <End Role="API_package" EntitySet="API_package" />
@@ -158,6 +175,7 @@ warning 6002: The table/view 'C:\USERS\TOBIAS\SOURCE\REPOS\SIMPLIFIED-SCHOOL-POR
             <End Role="API_package" EntitySet="API_package" />
             <End Role="Package_call" EntitySet="Package_call" />
           </AssociationSet>
+          <EntitySet Name="Pages" EntityType="SSPDatabaseModel.Pages" />
           </EntityContainer>
         <EntityType Name="API_package">
           <Key>
@@ -241,6 +259,18 @@ warning 6002: The table/view 'C:\USERS\TOBIAS\SOURCE\REPOS\SIMPLIFIED-SCHOOL-POR
           <End Type="SSPDatabaseModel.API_package" Role="API_package" Multiplicity="*" />
           <End Type="SSPDatabaseModel.Package_call" Role="Package_call" Multiplicity="*" />
         </Association>
+        <EntityType Name="Pages">
+          <Key>
+            <PropertyRef Name="PageId" />
+          </Key>
+          <Property Name="PageId" Type="Guid" Nullable="false" />
+          <Property Name="ParentId" Type="Guid" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Body" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ViewName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ViewData" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Activepage" Type="Boolean" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -308,6 +338,19 @@ warning 6002: The table/view 'C:\USERS\TOBIAS\SOURCE\REPOS\SIMPLIFIED-SCHOOL-POR
               <ScalarProperty Name="API_packageId" ColumnName="API_packageId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="Pages">
+            <EntityTypeMapping TypeName="SSPDatabaseModel.Pages">
+              <MappingFragment StoreEntitySet="Pages">
+                <ScalarProperty Name="Activepage" ColumnName="Activepage" />
+                <ScalarProperty Name="ViewData" ColumnName="ViewData" />
+                <ScalarProperty Name="ViewName" ColumnName="ViewName" />
+                <ScalarProperty Name="Body" ColumnName="Body" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="PageId" ColumnName="PageId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

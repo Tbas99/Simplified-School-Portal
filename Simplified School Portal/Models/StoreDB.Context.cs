@@ -31,5 +31,6 @@ namespace Simplified_School_Portal.Models
         public virtual DbSet<Package_call> Package_call { get; set; }
         public virtual DbSet<Request> Request { get; set; }
         public virtual DbSet<Pages> Pages { get; set; }
+        public virtual DbSet<Logins> Logins { get; set; }
     }
 }

@@ -150,7 +150,6 @@ namespace Simplified_School_Portal.Controllers
         {
             // Variable to check (highest) row position
             int highestY = 0;
-            int lastY = 0;
 
             // First order the list
             List<Position> orderedPositions = positions.OrderBy(o => o.y).ThenBy(o => o.x).ToList();
@@ -235,8 +234,8 @@ namespace Simplified_School_Portal.Controllers
                         if (Convert.ToInt16(lastPosition.x) < 3)
                         {
                             // append html row
-                            rowContentLeft = "<div class=\"col-md-6\"><p>" + htmlContentLeft + "</p></div>";
-                            rowContentRight = "<div class=\"col-md-6\"><p>" + htmlContentRight + "</p></div>";
+                            rowContentLeft = "<div class=\"col-md-5 dynamicBlock\"><p>" + htmlContentLeft + "</p></div>";
+                            rowContentRight = "<div class=\"col-md-5 col-md-offset-2 dynamicBlock\"><p>" + htmlContentRight + "</p></div>";
                             newRow = "<div class=\"row\">" + rowContentLeft + rowContentRight + "</div>";
                             totalHtmlContent += newRow;
                             lastRow++;
@@ -249,8 +248,8 @@ namespace Simplified_School_Portal.Controllers
                         else if (Convert.ToInt16(lastPosition.x) > 3)
                         {
                             // append html row
-                            rowContentLeft = "<div class=\"col-md-6\"><p>" + htmlContentLeft + "</p></div>";
-                            rowContentRight = "<div class=\"col-md-6\"><p>" + htmlContentRight + "</p></div>";
+                            rowContentLeft = "<div class=\"col-md-5 dynamicBlock\"><p>" + htmlContentLeft + "</p></div>";
+                            rowContentRight = "<div class=\"col-md-5 col-md-offset-2 dynamicBlock\"><p>" + htmlContentRight + "</p></div>";
                             newRow = "<div class=\"row\">" + rowContentLeft + rowContentRight + "</div>";
                             totalHtmlContent += newRow;
                             lastRow++;
@@ -268,8 +267,8 @@ namespace Simplified_School_Portal.Controllers
                 else
                 {
                     // append html row
-                    rowContentLeft = "<div class=\"col-md-6\"><p>" + htmlContentLeft + "</p></div>";
-                    rowContentRight = "<div class=\"col-md-6\"><p>" + htmlContentRight + "</p></div>";
+                    rowContentLeft = "<div class=\"col-md-5 dynamicBlock\"><p>" + htmlContentLeft + "</p></div>";
+                    rowContentRight = "<div class=\"col-md-5 col-md-offset-2 dynamicBlock\"><p>" + htmlContentRight + "</p></div>";
                     newRow = "<div class=\"row\">" + rowContentLeft + rowContentRight + "</div>";
                     totalHtmlContent += newRow;
                     lastRow++;
@@ -288,8 +287,8 @@ namespace Simplified_School_Portal.Controllers
                         htmlContentLeft = content;
 
                         // append html row
-                        rowContentLeft = "<div class=\"col-md-6\"><p>" + htmlContentLeft + "</p></div>";
-                        rowContentRight = "<div class=\"col-md-6\"><p>" + htmlContentRight + "</p></div>";
+                        rowContentLeft = "<div class=\"col-md-5 dynamicBlock\"><p>" + htmlContentLeft + "</p></div>";
+                        rowContentRight = "<div class=\"col-md-5 col-md-offset-2 dynamicBlock\"><p>" + htmlContentRight + "</p></div>";
                         newRow = "<div class=\"row\">" + rowContentLeft + rowContentRight + "</div>";
                         totalHtmlContent += newRow;
                         lastRow++;
@@ -307,8 +306,8 @@ namespace Simplified_School_Portal.Controllers
                         htmlContentRight = content;
 
                         // append html row
-                        rowContentLeft = "<div class=\"col-md-6\"><p>" + htmlContentLeft + "</p></div>";
-                        rowContentRight = "<div class=\"col-md-6\"><p>" + htmlContentRight + "</p></div>";
+                        rowContentLeft = "<div class=\"col-md-5 dynamicBlock\"><p>" + htmlContentLeft + "</p></div>";
+                        rowContentRight = "<div class=\"col-md-5 col-md-offset-2 dynamicBlock\"><p>" + htmlContentRight + "</p></div>";
                         newRow = "<div class=\"row\">" + rowContentLeft + rowContentRight + "</div>";
                         totalHtmlContent += newRow;
                         lastRow++;
@@ -323,22 +322,16 @@ namespace Simplified_School_Portal.Controllers
                 }
             }
 
-            // Store the created razor html in the database with a stored procedure
-            /*
-            var parameter1 = createParameter("@PageId", SqlDbType.UniqueIdentifier, Guid.NewGuid().ToString());
-            var parameter2 = createParameter("@Title", SqlDbType.NVarChar, "Service name");
-            var parameter3 = createParameter("@Body", SqlDbType.NVarChar, totalHtmlContent);
-            unitOfWork.PagesRepository.dbSet.SqlQuery("InsertPage @PageId, @Title, @Body", parameter1, parameter2, parameter3);
-            */
+            int rowcount = unitOfWork.PagesRepository.dbSet.Count();
+            rowcount++;
+
             Pages page = new Pages();
             page.PageId = Guid.NewGuid();
-            page.Title = "New service";
+            page.Title = "Page: " + rowcount.ToString();
             page.Body = totalHtmlContent;
             page.Activepage = false;
             unitOfWork.PagesRepository.Insert(page);
             unitOfWork.Save();
-
-            setPageLayout(unitOfWork.PagesRepository.dbSet.ToList(), page.Title);
 
             return View();
         }
@@ -348,18 +341,64 @@ namespace Simplified_School_Portal.Controllers
             return View(unitOfWork.PagesRepository.dbSet.ToList());
         }
 
-        public ActionResult Service()
+        [HttpPost]
+        public ActionResult SetActivePage(bool activePage, string pageName)
         {
-            ViewBag.Body = activeLayout.Body;
-            ViewBag.Title = activeLayout.Title;
+            // First check if a page is already active
+            bool allowedActivation = true;
+            foreach (Pages page in unitOfWork.PagesRepository.dbSet.ToList())
+            {
+                if (page.Activepage == true)
+                {
+                    allowedActivation = false;
+                }
+            }
 
-            return View();
+            foreach (Pages page in unitOfWork.PagesRepository.dbSet.ToList())
+            {
+                // if its not allowed to activate the page but the user still wants to activate it(acivepage = true)
+                if (!allowedActivation && activePage)
+                {
+                    ViewBag.info = "Only 1 page is allowed to be active at the time.";
+                    break;
+                }
+
+                // if active and input is to disable the page
+                if (page.Title == pageName && page.Activepage != activePage)
+                {
+                    page.Activepage = activePage;
+                    unitOfWork.PagesRepository.Update(page);
+                    unitOfWork.Save();
+                }
+                // if not active and input is to enable the page
+                else if (page.Title == pageName && page.Activepage == activePage && allowedActivation)
+                {
+                    page.Activepage = activePage;
+                    unitOfWork.PagesRepository.Update(page);
+                    unitOfWork.Save();
+                }
+            }
+
+            return RedirectToAction("SetActivePage");
         }
 
         [Authorize(Roles = "Admin")]
         public ActionResult Statistics()
         {
-            return View();
+            List<Statisticsmodel> stats = new List<Statisticsmodel>();
+
+            foreach (Logins login in unitOfWork.LoginsRepository.dbSet.ToList())
+            {
+                Statisticsmodel m = new Statisticsmodel();
+
+                m.date = login.LoginDate.Value.Date;
+                m.timestamp = login.LoginDate.Value.TimeOfDay;
+                m.loginId = login.LoginsId.ToString();
+
+                stats.Add(m);
+            }
+
+            return View(stats);
         }
 
         public APImodel listCalls()
@@ -382,28 +421,6 @@ namespace Simplified_School_Portal.Controllers
             };
 
             return calls;
-        }
-
-        public SqlParameter createParameter(string parameterName, SqlDbType type, string value)
-        {
-            var parameter = new SqlParameter();
-            parameter.ParameterName = parameterName;
-            parameter.SqlDbType = type;
-            parameter.SqlValue = value;
-
-            return parameter;
-        }
-
-        public void setPageLayout(List<Pages> pages, string layoutToActivate)
-        {
-            foreach (Pages page in pages)
-            {
-                if (layoutToActivate == page.Title)
-                {
-                    activeLayout = page;
-                    break;
-                }
-            }
         }
     }
 }

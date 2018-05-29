@@ -1,5 +1,57 @@
-﻿@{
+﻿@model IEnumerable<Simplified_School_Portal.Models.Statisticsmodel>
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Statistics page</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 text-center">
+            <h2>User log-on activity</h2>
+            <canvas id="loginsByDate" width="400" , height="400"></canvas>
+        </div>
+        <div class="col-md-6">
+            <h2>User logins per time interval</h2>
+            <canvas id="loginsByTimeInterval" width="400" height="400"></canvas>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+<script>
+    var ctx = document.getElementById("loginsByDate");
+    var dataLoginArray = [];
+    @foreach (var login in Model)
+    {
+        <text>
+        dataLoginArray.push("@login.date.ToShortDateString()");
+        </text>
+    }
+    var chart = new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: ["January", "February", "March", "April", "May", "June", "July"],
+            datasets: [{
+                label: "Logged in user activity per month",
+                data: [15, 19, 10, 11, 16, 15, 10],
+                fill: false,
+                borderColor: "rgb(75, 192, 192)",
+                lineTension: 0.5
+            }]
+        },
+        responsive: true,
+        maintainAspectRatio: false,
+        options: {
+            legend: {
+                labels: {
+                    // This more specific font property overrides the global property
+                    fontColor: '#fff'
+                }
+            }
+        }
+    });
+</script>

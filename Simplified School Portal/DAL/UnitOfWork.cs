@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web;
 using Simplified_School_Portal.Models;
@@ -14,6 +15,7 @@ namespace Simplified_School_Portal.DAL
         private GenericRepository<Package_call> package_callRepository;
         private GenericRepository<Feature_request> feature_requestRepository;
         private GenericRepository<Pages> pagesRepository;
+        private GenericRepository<Logins> loginsRepository;
 
         public GenericRepository<API_package> Api_packageRepository
         {
@@ -73,6 +75,23 @@ namespace Simplified_School_Portal.DAL
                 }
                 return pagesRepository;
             }
+        }
+
+        public GenericRepository<Logins> LoginsRepository
+        {
+            get
+            {
+                if (this.loginsRepository == null)
+                {
+                    this.loginsRepository = new GenericRepository<Logins>(context);
+                }
+                return loginsRepository;
+            }
+        }
+
+        public DbRawSqlQuery<T> SQLQuery<T>(string sql, params object[] parameters)
+        {
+            return context.Database.SqlQuery<T>(sql, parameters);
         }
 
         public void Save()

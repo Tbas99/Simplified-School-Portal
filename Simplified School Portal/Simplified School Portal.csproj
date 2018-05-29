@@ -240,9 +240,11 @@
     <Compile Include="DAL\IAPI_packageRepository.cs" />
     <Compile Include="DAL\IFeature_requestRepository.cs" />
     <Compile Include="DAL\IInfo_requestRepository.cs" />
+    <Compile Include="DAL\ILoginsRepository.cs" />
     <Compile Include="DAL\Info_requestRepository.cs" />
     <Compile Include="DAL\IPackage_callRepository.cs" />
     <Compile Include="DAL\IPagesRepository.cs" />
+    <Compile Include="DAL\LoginsRepository.cs" />
     <Compile Include="DAL\Package_callRepository.cs" />
     <Compile Include="DAL\PagesRepository.cs" />
     <Compile Include="DAL\UnitOfWork.cs" />
@@ -264,6 +266,9 @@
     <Compile Include="Models\Info_request.cs">
       <DependentUpon>StoreDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Logins.cs">
+      <DependentUpon>StoreDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Mailmodel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Package_call.cs">
@@ -276,6 +281,7 @@
     <Compile Include="Models\Request.cs">
       <DependentUpon>StoreDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Statisticsmodel.cs" />
     <Compile Include="Models\StoreDB.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -428,11 +434,6 @@
     <Content Include="Views\Shared\_UserPartial.cshtml" />
     <Content Include="Views\BeheerServices\NewService.cshtml" />
     <Content Include="Views\BeheerServices\Statistics.cshtml" />
-    <Content Include="Views\Info_request\Create.cshtml" />
-    <Content Include="Views\Info_request\Delete.cshtml" />
-    <Content Include="Views\Info_request\Details.cshtml" />
-    <Content Include="Views\Info_request\Edit.cshtml" />
-    <Content Include="Views\Info_request\Index.cshtml" />
     <Content Include="Views\StandardServices\Index.cshtml" />
     <Content Include="Views\BeheerServices\_APIcallPartial.cshtml" />
     <Content Include="Views\StandardServices\Callback.cshtml" />
@@ -446,7 +447,7 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\BeheerServices\_CreatePagePartial.cshtml" />
-    <Content Include="Views\BeheerServices\Service.cshtml" />
+    <Content Include="Views\StandardServices\Service.cshtml" />
     <Content Include="Views\BeheerServices\SetActivePage.cshtml" />
   </ItemGroup>
   <ItemGroup>

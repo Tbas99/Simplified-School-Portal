@@ -7143,3 +7143,32 @@ form.go-right input:focus + label, form.go-right textarea:focus + label {
     padding-bottom: 10px;
     padding-top: 3px;
 }
+
+/* layout to activate pages */
+.pageDeactivatedLayout {
+    background: #6d1e1e;
+    color: #fff;
+}
+
+.pageActivatedLayout {
+    background: #33a52d;
+    color: #fff;
+}
+
+.autoWidth {
+    width: auto;
+}
+
+.dynamicBlock {
+    background-color: #c1bebe;
+    color: #423a3a;
+    padding: 20px;
+    border-style: solid;
+    border-width: 5px;
+    border-color: #464343;
+}
+
+.dynamicBlock:hover {
+    background-color: #fff9f9;
+    color: #191414;
+}

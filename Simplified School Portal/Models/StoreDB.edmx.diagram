@@ -14,6 +14,7 @@
         <AssociationConnector Association="SSPDatabaseModel.FK_Request_Info" />
         <AssociationConnector Association="SSPDatabaseModel.Mapping_package_call" />
         <EntityTypeShape EntityType="SSPDatabaseModel.Pages" Width="1.5" PointX="8.875" PointY="3" />
+        <EntityTypeShape EntityType="SSPDatabaseModel.Logins" Width="1.5" PointX="8.875" PointY="1.25" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

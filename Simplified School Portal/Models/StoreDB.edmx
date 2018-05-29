@@ -35,6 +35,13 @@
           <Property Name="Request_user" Type="text" Nullable="false" />
           <Property Name="Request_date" Type="date" Nullable="false" />
         </EntityType>
+        <EntityType Name="Logins">
+          <Key>
+            <PropertyRef Name="LoginsId" />
+          </Key>
+          <Property Name="LoginsId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="LoginDate" Type="datetime" />
+        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'C:\USERS\TOBIAS\SOURCE\REPOS\SIMPLIFIED-SCHOOL-PORTAL\SIMPLIFIED SCHOOL PORTAL\APP_DATA\SSPDATABASE.MDF.dbo.Mapping_package_call' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Mapping_package_call">
@@ -127,6 +134,7 @@ warning 6002: The table/view 'C:\USERS\TOBIAS\SOURCE\REPOS\SIMPLIFIED-SCHOOL-POR
           <EntitySet Name="API_package" EntityType="Self.API_package" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Feature_request" EntityType="Self.Feature_request" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Info_request" EntityType="Self.Info_request" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Logins" EntityType="Self.Logins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Package_call" EntityType="Self.Package_call" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pages" EntityType="Self.Pages" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Request" EntityType="Self.Request" Schema="dbo" store:Type="Tables" />
@@ -176,6 +184,7 @@ warning 6002: The table/view 'C:\USERS\TOBIAS\SOURCE\REPOS\SIMPLIFIED-SCHOOL-POR
             <End Role="Package_call" EntitySet="Package_call" />
           </AssociationSet>
           <EntitySet Name="Pages" EntityType="SSPDatabaseModel.Pages" />
+          <EntitySet Name="Logins" EntityType="SSPDatabaseModel.Logins" />
           </EntityContainer>
         <EntityType Name="API_package">
           <Key>
@@ -271,6 +280,13 @@ warning 6002: The table/view 'C:\USERS\TOBIAS\SOURCE\REPOS\SIMPLIFIED-SCHOOL-POR
           <Property Name="ViewData" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Activepage" Type="Boolean" Nullable="false" />
         </EntityType>
+        <EntityType Name="Logins">
+          <Key>
+            <PropertyRef Name="LoginsId" />
+          </Key>
+          <Property Name="LoginsId" Type="Guid" Nullable="false" />
+          <Property Name="LoginDate" Type="DateTime" Precision="3" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -348,6 +364,14 @@ warning 6002: The table/view 'C:\USERS\TOBIAS\SOURCE\REPOS\SIMPLIFIED-SCHOOL-POR
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="ParentId" ColumnName="ParentId" />
                 <ScalarProperty Name="PageId" ColumnName="PageId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Logins">
+            <EntityTypeMapping TypeName="SSPDatabaseModel.Logins">
+              <MappingFragment StoreEntitySet="Logins">
+                <ScalarProperty Name="LoginDate" ColumnName="LoginDate" />
+                <ScalarProperty Name="LoginsId" ColumnName="LoginsId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

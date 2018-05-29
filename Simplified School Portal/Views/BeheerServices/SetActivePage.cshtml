@@ -11,16 +11,53 @@
         @foreach (var page in Model)
         {
             <div class="col-md-4">
-                <div class="pagelayout smallMarginBot">
-                    <h2 class="cleanMargin">@page.Title</h2>
-                    <button class="btn btn-block"></button>
-                    @if (page.Activepage == true)
-                    {
-                        <p>Active</p>
-                    }
-                    <input type="button" class="btn glyphicon-plus text-right" />
-                </div>
+                @if (page.Activepage == true)
+                {
+                    <div class="pageActivatedLayout smallMarginBot">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h2 class="cleanMargin">@page.Title</h2>
+                            </div>
+                            <div class="col-md-2 col-md-offset-2">
+                                @using (Html.BeginForm("SetActivePage", "BeheerServices", FormMethod.Post, new { @class = "cleanMargin autoWidth" }))
+                                {
+                                    @Html.Hidden("activePage", false)
+                                    @Html.Hidden("pageName", page.Title)
+                                    <input type="submit" value="-" class="btn btn-primary" />
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="pageDeactivatedLayout smallMarginBot">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h2 class="cleanMargin">@page.Title</h2>
+                            </div>
+                            <div class="col-md-2 col-md-offset-2">
+                                @using (Html.BeginForm("SetActivePage", "BeheerServices", FormMethod.Post, new { @class = "cleanMargin autoWidth" }))
+                                {
+                                    @Html.Hidden("activePage", true)
+                                    @Html.Hidden("pageName", page.Title)
+                                    <input type="submit" value="+" class="btn btn-primary" />
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }                
             </div>
         }
     </div>
 </div>
+
+<script type="text/javascript">
+    function setActivePage(pageActive, pageName) {
+        $.ajax({
+            type: "POST",
+            url: "SetActivePage",
+            data: { activePage: pageActive, pageName: pageName }            
+        })
+    }
+</script>

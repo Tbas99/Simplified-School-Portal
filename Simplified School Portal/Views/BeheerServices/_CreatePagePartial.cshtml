@@ -13,11 +13,10 @@
     }
 }
 
-@* Todo: create grid-stack-items for each API package available *@
 <div class="row">
     <div class="col-md-4">
         <div class="pagelayout selectApiPackage text-center">
-            <button class="btn btn-primary btn-block" onclick="saveData()">Publish Page</button>
+            <button class="btn btn-primary btn-block smallMarginBot" onclick="saveData()">Publish Page</button>
             @foreach (var package in Model)
             {
                 <div class="smallrow smallrowTweaks">
@@ -32,25 +31,7 @@
     <div class="col-md-8">
         <div class="pagelayout smallPaddingOverall">
             <div class="grid-stack">
-                @*
-                @foreach (var package in Model)
-                {
-                    <div class="grid-stack-item"
-                         data-gs-x="0" data-gs-y="0"
-                         data-gs-width="4" data-gs-height="2">
-                        <div class="grid-stack-item-content">
-                            <p>@package.API_packageId</p>
-                            <p>@package.Package_name</p>
-                            <p>@package.Package_description</p>
-                            <p> Calls: </p>
-                            @foreach (var call in package.Package_call)
-                            {
-                                <p>@call.Call</p>
-                            }
-                        </div>
-                    </div>
-                }
-                *@
+                @* Container for gridstack widgets *@
             </div>
         </div>
     </div>

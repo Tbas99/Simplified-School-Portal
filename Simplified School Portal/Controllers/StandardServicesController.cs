@@ -25,8 +25,8 @@ namespace Simplified_School_Portal.Controllers
 {
     public class StandardServicesController : Controller
     {
+        private UnitOfWork unitOfWork = new UnitOfWork();
         private string host = "https://identity.fhict.nl/connect/authorize";
-        private string canvasHost = "https://fhict.instructure.com/login/oauth2/auth";
         private static string lastAction = "";
 
         // GET: StandardServices
@@ -149,6 +149,32 @@ namespace Simplified_School_Portal.Controllers
             return View();
         }
 
+        public PartialViewResult _UserPartial()
+        {
+            return PartialView(unitOfWork.PagesRepository.dbSet.ToList());
+        }
+
+        public ActionResult Service()
+        {
+            bool anyServiceActive = false;
+            foreach (Pages page in unitOfWork.PagesRepository.dbSet.ToList())
+            {
+                if (page.Activepage)
+                {
+                    ViewBag.Body = page.Body;
+                    ViewBag.Title = page.Title;
+                    anyServiceActive = true;
+                }
+            }
+
+            if (!anyServiceActive)
+            {
+                ViewBag.Title = "No service is currently active";
+            }
+
+            return View();
+        }
+
         public async Task<ActionResult> Callback()
         {
             // If the authorisation process returns a code, exchange it for an access token
@@ -160,6 +186,17 @@ namespace Simplified_School_Portal.Controllers
                 {
                     var code = Request.QueryString["code"];
                     var authToken = await GetTokenFromCode(code);
+
+                    // Means a succesfull login occured 
+                    if (authToken != null)
+                    {
+                        Logins login = new Logins();
+                        login.LoginsId = Guid.NewGuid();
+                        login.LoginDate = DateTime.Now;
+
+                        unitOfWork.LoginsRepository.dbSet.Add(login);
+                        unitOfWork.Save();
+                    }
                 }
                 catch (Exception ex)
                 {

@@ -89,11 +89,6 @@ namespace Simplified_School_Portal.DAL
             }
         }
 
-        public DbRawSqlQuery<T> SQLQuery<T>(string sql, params object[] parameters)
-        {
-            return context.Database.SqlQuery<T>(sql, parameters);
-        }
-
         public void Save()
         {
             context.SaveChanges();

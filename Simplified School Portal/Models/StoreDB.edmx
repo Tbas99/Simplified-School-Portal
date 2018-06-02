@@ -138,11 +138,7 @@ warning 6002: The table/view 'C:\USERS\TOBIAS\SOURCE\REPOS\SIMPLIFIED-SCHOOL-POR
           <EntitySet Name="Package_call" EntityType="Self.Package_call" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pages" EntityType="Self.Pages" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Request" EntityType="Self.Request" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Mapping_package_call" EntityType="Self.Mapping_package_call" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Mapping_package_call].[API_packageId] AS [API_packageId], 
-    [Mapping_package_call].[Package_callId] AS [Package_callId]
-    FROM [dbo].[Mapping_package_call] AS [Mapping_package_call]</DefiningQuery>
+          <EntitySet Name="Mapping_package_call" EntityType="Self.Mapping_package_call" store:Type="Tables" Schema="dbo">
           </EntitySet>
           <AssociationSet Name="FK_Mapping_ToAPIPackage" Association="Self.FK_Mapping_ToAPIPackage">
             <End Role="API_package" EntitySet="API_package" />

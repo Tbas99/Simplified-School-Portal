@@ -105,7 +105,7 @@ namespace Simplified_School_Portal.Controllers
             ViewBag.Message = "Service succesfully registered.";
             ModelState.Clear();
 
-            return View(listCalls());
+            return RedirectToAction("NewService");
         }
 
         [HttpGet]
@@ -127,7 +127,7 @@ namespace Simplified_School_Portal.Controllers
             unitOfWork.Package_callRepository.Insert(call);
             unitOfWork.Save();
 
-            return View("NewService", listCalls());
+            return RedirectToAction("NewService");
         }
 
         [HttpGet]
@@ -331,7 +331,7 @@ namespace Simplified_School_Portal.Controllers
             unitOfWork.PagesRepository.Insert(page);
             unitOfWork.Save();
 
-            return View();
+            return RedirectToAction("NewService");
         }
 
         public ActionResult SetActivePage()

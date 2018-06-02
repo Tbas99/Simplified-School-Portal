@@ -278,19 +278,6 @@ namespace Simplified_School_Portal.Controllers
             }
         }
 
-        private string GetCanvasAuthTokenFromSession()
-        {
-            if (HttpContext.Request.Cookies.AllKeys.Contains("canvasToken"))
-            {
-                HttpCookie cookie = HttpContext.Request.Cookies["canvasToken"];
-                return cookie.Value;
-            }
-            else
-            {
-                return "";
-            }
-        }
-
         public RedirectToRouteResult log_out()
         {
             // Check for usercookie value, if it has value, also delete access token.

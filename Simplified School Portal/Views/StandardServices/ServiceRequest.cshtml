@@ -1,5 +1,74 @@
-﻿@{
+﻿@model Simplified_School_Portal.Models.Requestmodel
+@{
+    ViewBag.Title = "Make a service request!";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<!-- Keep it off the top. -->
+<div class="col-xs-12" style="height:50px;"></div>
+
+<div class="container">
+    <div class="row">
+        @using (Html.BeginForm("ServiceRequest", "StandardServices", FormMethod.Post, new { @class = "col-md-6 col-md-offset-3 go-right formTweaks" }))
+        {
+            <!-- To negate XSS attacks, generate an AntiForgeryToken -->
+            @Html.AntiForgeryToken()
+
+            <!-- Make sure everything is filled, show a warning if not -->
+            @Html.ValidationSummary()
+
+            <h2>@ViewBag.Title</h2>
+            <p>If you want an service added to your dynamic portal, please fill the form accordingly and your portal manager will handle the rest!</p>
+
+            <!-- Name input-->
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.issuer, new { @class = "form-control", @id = "Name", @name = "Name", @type = "text", @required = "required" })
+                <label for="Name">Your Name</label>
+            </div>
+
+            <!-- Email input-->
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.name, new { @class = "form-control", @id = "FeatureName", @name = "FeatureName", @type = "FeatureName", @required = "required" })
+                <label for="FeatureName">Feature name</label>
+            </div>
+
+            <!-- Message body-->
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.url, new { @class = "form-control", @id = "Url", @name = "Url", @type = "url", @required = "required" })
+                <label for="Url">Feature info url</label>
+            </div>
+
+            <!-- Form actions -->
+            <div class="form-group">
+                <div class="col-md-12 text-center cleanPadding">
+                    <button type="submit" class="btn btn-default btn-block" value="Log in">Submit</button>
+                </div>
+            </div>
+        }
+
+        @if (ViewBag.Message != null)
+        {
+            <script type="text/javascript">
+                window.onload = function () {
+                    alert("@ViewBag.Message");
+                };
+            </script>
+        }
+    </div>
+</div>
+
+<div class="col-xs-12" style="height:75px;"></div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3 cliente">
+            <h2 class="text-left textcentermargin">How does it work?</h2>
+            <p class="text-left textcentermargin">
+                If you want a specific service added to the portal, you can send a request with this form. Your portalmanager will handle the rest, and will notify you of what happens next.
+                Please make sure that when you fill in the details in the form above, they are correct.
+            </p>
+            <p class="text-left textcentermargin">For extra clarification; You have to insert the website of the feature you want to have implemented into the Feature info url field.</p>
+        </div>
+    </div>
+</div>
 

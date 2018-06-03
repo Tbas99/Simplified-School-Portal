@@ -6,9 +6,9 @@
 <!-- Keep it off the top. -->
 <div class="col-xs-12" style="height:75px;"></div>
 
-<div class="row">
+<div class="row equalHeight">
     <div class="col-md-5">
-        <div class="row text-center filterBar">                              
+        <div class="row text-center filterBar">
             @using (Html.BeginForm("Overview", "BeheerServices", FormMethod.Post, new { @class = "cleanMargin fullWidth" }))
             {
                 string today = DateTime.Now.ToShortDateString();
@@ -44,31 +44,24 @@
                     sb.Append("<br>");
                     sb.AppendFormat("Message: {0}", item.Description);
                     var msg = new HtmlString(sb.ToString());
-                    <div class="pop-message">
+                    <div class="pop-message pop-message-tweaks">
                         @Html.Raw(msg)
+                        <div id="@item.Info_requestId" class="btn btn-primary btn-block" onclick="showDetails('@msg')">View details</div>
                     </div>
                 }
             </div>
         </div>
     </div>
 
-    <!-- Spacer -->
-    <div class="col-md-2">
-
-    </div>
-    <!-- Spacer -->
-
-    <div class="col-md-5">
-        <p>test</p>
+    <div class="col-md-7 filterBar">
+        <div id="details" class="details textcentermargin">
+            <p>No request selected.</p>
+        </div>
     </div>
 </div>
 
-<!-- Keep it off the bot. -->
-<div class="col-xs-12" style="height:75px;"></div>
-
-
 <script type="text/javascript">
-    function changeValueDay() {
-        document.getElementById("getTypesByDay").value = ;
+    function showDetails(content) {
+        $('#details').html(content);
     }
 </script>

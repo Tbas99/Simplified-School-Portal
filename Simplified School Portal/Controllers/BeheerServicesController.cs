@@ -11,6 +11,8 @@ using Newtonsoft.Json.Linq;
 using System.Web.Script.Serialization;
 using System.Data.SqlClient;
 using System.Data;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Simplified_School_Portal.Controllers
 {
@@ -419,6 +421,31 @@ namespace Simplified_School_Portal.Controllers
             };
 
             return calls;
+        }
+
+        public async Task<string> apiCall(string callUrl, string dataSection, string desiredContentKey)
+        {
+            string callResult = "";
+
+            var client = new HttpClient();
+
+            var response = await client.GetAsync(callUrl);
+            var data = JObject.Parse(await response.Content.ReadAsStringAsync());
+
+            // If user wants data from a key that isn't nested and easly accesible 
+            if (dataSection == "front")
+            {
+                callResult = (string)data[desiredContentKey];
+            }
+            // if it is nested in another key, create an array and get the correct content
+            else if (dataSection == "nested")
+            {
+                callResult = 
+            }
+
+            string callResult = (string)data[desiredContentKey];
+
+            return callResult;
         }
     }
 }

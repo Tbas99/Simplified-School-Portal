@@ -52,26 +52,6 @@ namespace Simplified_School_Portal.Controllers
 
         public async Task<ActionResult> Canvas()
         {
-            /*
-            // First, see if the user is already connected
-            var authToken = GetCanvasAuthTokenFromSession();
-
-            // If the user isn't connected, redirect to the authorisation page
-            if (string.IsNullOrEmpty(authToken))
-            {
-                lastAction = "Canvas";
-                return Redirect(canvasHost + "?client_id=i387766-simplified&response_type=code&redirect_uri=" + HttpUtility.HtmlEncode("https://localhost:44363/StandardServices/Callback"));
-            }
-
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
-
-            // The actual GET call
-            var response = await client.GetAsync("https://api.fhict.nl/canvas/courses/me");
-            var data = JObject.Parse(await response.Content.ReadAsStringAsync());
-            var dataArray = (JArray)data["data"];
-            */
-
             return View();
         }
 
@@ -149,9 +129,35 @@ namespace Simplified_School_Portal.Controllers
             return View();
         }
 
-        public PartialViewResult _UserPartial()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ServiceRequest(Requestmodel m)
         {
-            return PartialView(unitOfWork.PagesRepository.dbSet.ToList());
+            Feature_request request = new Feature_request();
+            request.Feature_name = m.name;
+            request.Feature_request_issuer = m.issuer;
+            request.Feature_develop_url = m.name;
+
+            string isImplemented = "false";
+            foreach (API_package package in unitOfWork.Api_packageRepository.dbSet.ToList())
+            {
+                if (package.Package_name == m.name)
+                {
+                    isImplemented = "true";
+                }
+            }
+
+            request.Feature_is_implemented = isImplemented;
+            request.Feature_request_date = DateTime.Now;
+
+            unitOfWork.Feature_requestRepository.Insert(request);
+            unitOfWork.Save();
+
+            // Finalization of the request
+            ViewBag.Message = "Request submitted. Your portal manager will get back to you on this request as soon as possible.";
+            ModelState.Clear();
+
+            return View();
         }
 
         public ActionResult Service()
@@ -289,6 +295,31 @@ namespace Simplified_School_Portal.Controllers
             }
 
             return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult log_in(string lastActionName)
+        {
+            // First, see if the user is already connected
+            var authToken = GetAuthTokenFromSession();
+
+
+            // If the user isn't connected, redirect to the authorisation page
+            if (string.IsNullOrEmpty(authToken))
+            {
+                // Check if user is coming from index homepage
+                if (lastActionName == null)
+                {
+                    lastAction = "Index";
+                }
+                else
+                {
+                    lastAction = lastActionName;
+                }
+
+                return Redirect(host + "?client_id=i387766-simplified&scope=fhict fhict_personal openid profile email roles&response_type=code&redirect_uri=" + HttpUtility.HtmlEncode("https://localhost:44363/StandardServices/Callback"));
+            }
+
+            return null;
         }
 
         // function to extract date-time from a single string provided by the API.

@@ -7027,6 +7027,11 @@ form.go-right input:focus + label, form.go-right textarea:focus + label {
     overflow: auto;
 }
 
+.pop-message-tweaks {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .addScrollbar {
     max-height: 500px;
     overflow-y: auto;
@@ -7172,4 +7177,8 @@ form.go-right input:focus + label, form.go-right textarea:focus + label {
 .dynamicBlock:hover {
     background-color: #fff9f9;
     color: #191414;
+}
+
+.details {
+    word-wrap: break-word;
 }

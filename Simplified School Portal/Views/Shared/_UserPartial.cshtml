@@ -34,7 +34,7 @@
     }
     else
     {
-        <li class="hoverEffect"><a href="https://identity.fhict.nl/connect/authorize?client_id=i387766-simplified&scope=fhict fhict_personal openid profile email roles&redirect_uri=https://localhost:44363/​&response_type=code">Log in for students</a></li>
+        <li class="hoverEffect">@Html.ActionLink("Log in for students", "log_in", "StandardServices")</li>
     }
 
     @if (Request.IsAuthenticated)

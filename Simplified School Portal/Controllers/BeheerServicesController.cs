@@ -432,6 +432,7 @@ namespace Simplified_School_Portal.Controllers
             var response = await client.GetAsync(callUrl);
             var data = JObject.Parse(await response.Content.ReadAsStringAsync());
 
+            /*
             // If user wants data from a key that isn't nested and easly accesible 
             if (dataSection == "front")
             {
@@ -444,7 +445,7 @@ namespace Simplified_School_Portal.Controllers
             }
 
             string callResult = (string)data[desiredContentKey];
-
+            */
             return callResult;
         }
     }

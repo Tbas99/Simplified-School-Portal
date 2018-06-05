@@ -32,8 +32,7 @@ namespace Simplified_School_Portal
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
-                AuthenticationType = "Cookies",
-                //CookieManager = new SystemWebChunkingCookieManager()           
+                AuthenticationType = "Cookies"      
             });
 
             app.UseOpenIdConnectAuthentication(new OpenIdConnectAuthenticationOptions

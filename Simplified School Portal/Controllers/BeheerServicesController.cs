@@ -161,7 +161,6 @@ namespace Simplified_School_Portal.Controllers
             int rows = 0;
             int nextRowNumber = 0;
             List<int> rowNumbers = new List<int>();
-            int row = 0;
             int lastRow = 0;
 
 

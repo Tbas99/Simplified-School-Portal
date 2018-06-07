@@ -1,14 +1,3 @@
-/* NUGET: BEGIN LICENSE TEXT
- *
- * Microsoft grants you the right to use these script files for the sole
- * purpose of either: (i) interacting through your browser with the Microsoft
- * website or online service, subject to the applicable licensing or use
- * terms; or (ii) using the files as included with a Microsoft product subject
- * to that product's license terms. Microsoft reserves all other rights to the
- * files not expressly granted by Microsoft, whether by implication, estoppel
- * or otherwise. The notices and licenses below are for informational purposes only.
- *
- * NUGET: END LICENSE TEXT */
 /*!
  * Bootstrap v3.0.0
  *
@@ -20,8 +9,6 @@
  */
 
 /*! normalize.css v2.1.0 | MIT License | git.io/normalize */
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,600);
-
 
 article,
 aside,
@@ -307,16 +294,6 @@ table {
           box-sizing: border-box;
 }
 
-/* Custom CSS */
-.cliente {
-    margin-top: 10px;
-    border: #cdcdcd medium solid;
-    border-radius: 10px;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
 html {
   font-size: 62.5%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -450,7 +427,7 @@ cite {
 }
 
 .text-danger {
-  color: #ffa19f;
+  color: #b94a48;
 }
 
 .text-success {
@@ -471,11 +448,6 @@ cite {
 
 .text-center {
   text-align: center;
-}
-
-/*custom css*/
-.textcentermargin {
-    margin: 20px;
 }
 
 h1,
@@ -1504,7 +1476,6 @@ th {
 .table-hover > tbody > tr:hover > td,
 .table-hover > tbody > tr:hover > th {
   background-color: #f5f5f5;
-  color: black;
 }
 
 table col[class*="col-"] {
@@ -1658,15 +1629,15 @@ fieldset {
 }
 
 legend {
-    display: block;
-    width: 100%;
-    padding: 0;
-    margin-bottom: 20px;
-    font-size: 21px;
-    line-height: inherit;
-    color: #5a5a5a; /* Edited value */
-    border: 0;
-    border-bottom: 1px solid #e5e5e5;
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin-bottom: 20px;
+  font-size: 21px;
+  line-height: inherit;
+  color: #333333;
+  border: 0;
+  border-bottom: 1px solid #e5e5e5;
 }
 
 label {
@@ -1741,7 +1712,7 @@ input[type="number"]::-webkit-inner-spin-button {
   padding: 6px 12px;
   font-size: 14px;
   line-height: 1.428571429;
-  color: #ffffff;
+  color: #fff;
   vertical-align: middle;
   background-color: #ffffff;
   border: 1px solid #cccccc;
@@ -2392,8 +2363,7 @@ input[type="button"].btn-block {
           transition: opacity 0.15s linear;
 }
 
-/* Was in*/
-.fade.show {
+.fade.in {
   opacity: 1;
 }
 
@@ -4520,8 +4490,8 @@ textarea.input-group-sm > .input-group-btn > .btn {
 }
 
 .navbar-inverse {
-  /*background-color: #222222; old colour */
-  background-color: #2a2828;
+  background-color: #222222;
+  border-color: #080808;
 }
 
 .navbar-inverse .navbar-brand {
@@ -5569,7 +5539,7 @@ a.list-group-item:focus {
   min-height: 20px;
   padding: 19px;
   margin-bottom: 20px;
-  background-color: #ffffff;
+  background-color: #f5f5f5;
   border: 1px solid #e3e3e3;
   border-radius: 4px;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
@@ -5651,15 +5621,14 @@ body.modal-open,
           transition: transform 0.3s ease-out;
 }
 
-/* Was in */
-.modal.show .modal-dialog {
+.modal.in .modal-dialog {
   -webkit-transform: translate(0, 0);
       -ms-transform: translate(0, 0);
           transform: translate(0, 0);
 }
 
 .modal-dialog {
-  z-index: 1040;
+  z-index: 1050;
   width: auto;
   padding: 10px;
   margin-right: auto;
@@ -5693,9 +5662,8 @@ body.modal-open,
   filter: alpha(opacity=0);
 }
 
-/* Was in */
-.modal-backdrop.show {
-  opacity: 0.5 !important;
+.modal-backdrop.in {
+  opacity: 0.5;
   filter: alpha(opacity=50);
 }
 
@@ -6834,351 +6802,4 @@ td.visible-print {
   td.hidden-print {
     display: none !important;
   }
-}
-
-/* Custom site CSS continued.. */
-.hoverEffect {
-    transition-property: all;
-    transition-duration: 1s;
-    transition-timing-function: linear;
-}
-
-.hoverEffect:hover {
-    color: #FFFFFF;
-    background-color: #141111;
-}
-
-.frontpageHoverEffect {
-    transition-property: all;
-    transition-duration: 1s;
-    transition-timing-function: linear;
-}
-
-.frontpageHoverEffect:hover {
-    color: #fff;
-    background-color: #817f7f;
-    border-color: #817f7f;
-}
-
-.formColour {
-    color: #5a5a5a;
-}
-
-/* Form css for flashy effects */
-
-.form-control {
-    background: transparent;
-}
-
-form {
-    width: 320px;
-    margin: 20px;
-}
-
-form > div {
-    position: relative;
-    overflow: hidden;
-}
-
-form input, form textarea {
-    width: 100%;
-    border: 2px solid gray;
-    background: none;
-    position: relative;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    padding: 8px 12px;
-    outline: 0;
-}
-
-form input:valid, form textarea:valid {
-    background: white;
-    color: #555555;
-}
-
-form input:focus, form textarea:focus {
-    border-color: #357EBD;
-}
-
-form input:focus + label, form textarea:focus + label {
-    background: #357EBD;
-    color: white;
-    font-size: 70%;
-    padding: 1px 6px;
-    z-index: 2;
-    text-transform: uppercase;
-}
-
-form label {
-    -webkit-transition: background 0.2s, color 0.2s, top 0.2s, bottom 0.2s, right 0.2s, left 0.2s;
-    transition: background 0.2s, color 0.2s, top 0.2s, bottom 0.2s, right 0.2s, left 0.2s;
-    position: absolute;
-    color: #999;
-    padding: 7px 6px;
-    font-weight: normal;
-}
-
-form textarea {
-    display: block;
-    resize: vertical;
-}
-
-form.go-bottom input, form.go-bottom textarea {
-    padding: 12px 12px 12px 12px;
-}
-
-form.go-bottom label {
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-}
-
-form.go-bottom input:focus, form.go-bottom textarea:focus {
-    padding: 4px 6px 20px 6px;
-}
-
-form.go-bottom input:focus + label, form.go-bottom textarea:focus + label {
-    top: 100%;
-    margin-top: -16px;
-}
-
-form.go-right label {
-    border-radius: 0 5px 5px 0;
-    height: 100%;
-    top: 0;
-    right: 100%;
-    width: 100%;
-    margin-right: -100%;
-}
-
-form.go-right input:focus + label, form.go-right textarea:focus + label {
-    right: 0;
-    margin-right: 0;
-    width: 40%;
-    padding-top: 5px;
-}
-
-.formTweaks {
-    border-width: 2px;
-    border-color: #5a5a5a;
-    border-style: solid;
-    background-color: #5a5a5a;
-    box-shadow: 0px 0px 1px 3px dimgrey;
-    color: #ffffff;
-}
-
-.cleanPadding {
-    padding: 0;
-}
-
-.cleanMargin {
-    margin: 0;
-}
-
-.smallMarginBot {
-    margin-bottom: 25px;
-}
-
-.smallPaddingOverall {
-    padding: 20px;
-}
-
-/* Equal height columns */
-.equalHeight {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.equalHeight > [class*='col-'] {
-    display: flex;
-    flex-direction: column;
-}
-
-/* For the cliente class */
-.fullHeight {
-    height: 100%;
-}
-
-/* filter bar css */
-.filterBar {
-    padding: 10px;
-    border-width: 3px;
-    border-color: #38333E;
-    border-style: solid;
-    background-color: #312F33;
-}
-
-/* pop message overview */
-.pop-message {
-    border-width: 2px;
-    border-style: solid;
-    border-color: #e0dbdb;
-    background-color: #e0dbdb;
-    border-radius: 3px 3px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    padding: 10px;
-    color: #3e3e3e;
-    overflow: auto;
-}
-
-.pop-message-tweaks {
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.addScrollbar {
-    max-height: 500px;
-    overflow-y: auto;
-}
-
-.fullWidth {
-    width: 100%;
-}
-
-.halfWidth {
-    width: 50%;
-}
-
-/* Calendar on lesrooster page */
-/* Month header */
-.month {
-    padding: 70px 25px;
-    width: 100%;
-    background: #1abc9c;
-    text-align: center;
-}
-
-/* Month list */
-.month ul {
-    margin: 0;
-    padding: 0;
-}
-
-.month ul li {
-    color: white;
-    font-size: 20px;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-}
-
-/* Previous button inside month header */
-.month .prev {
-    float: left;
-    padding-top: 10px;
-}
-
-/* Next button */
-.month .next {
-    float: right;
-    padding-top: 10px;
-}
-
-/* Weekdays (Mon-Sun) */
-.weekdays {
-    margin: 0;
-    padding: 10px 0;
-    background-color:#ddd;
-}
-
-.weekdays li {
-    display: inline-block;
-    width: 13.6%;
-    color: #666;
-    text-align: center;
-}
-
-/* For the pop-up */
-.selectorBoxes {
-    background: white;
-    color: #555555;
-}
-
-/* For info blocks on studentenplein */
-.info_block {
-    padding: 10px;
-    background-color: #545454;
-}
-
-
-/* Gridstack tweaks */
-.pagelayout {
-    background: #2c3e50;
-    color: #fff;
-}
-
-.grid-stack-item-content {
-    background: white;
-    color: #2c3e50;
-    text-align: center;
-}
-
-/* Tooltip text */
-.smallrow .tooltiptext {
-    visibility: hidden;
-    width: 120px;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    padding: 5px 0;
-    border-radius: 6px;
-    /* Position the tooltip text - see examples below! */
-    top: -5px;
-    right: 105%;
-    /* Fade in tooltip - takes 1 second to go from 0% to 100% opac: */
-    opacity: 0;
-    transition: opacity 1s;
-}
-
-/* Show the tooltip text when you mouse over the tooltip container */
-.smallrow:hover .tooltiptext {
-    visibility: visible;
-}
-
-.smallrow:hover .tooltiptext {
-    visibility: visible;
-    opacity: 1;
-}
-
-.smallrowTweaks {
-    padding-bottom: 10px;
-    padding-top: 3px;
-}
-
-/* layout to activate pages */
-.pageDeactivatedLayout {
-    background: #6d1e1e;
-    color: #fff;
-}
-
-.pageActivatedLayout {
-    background: #33a52d;
-    color: #fff;
-}
-
-.autoWidth {
-    width: auto;
-}
-
-.dynamicBlock {
-    background-color: #c1bebe;
-    color: #423a3a;
-    padding: 20px;
-    border-style: solid;
-    border-width: 5px;
-    border-color: #464343;
-}
-
-.dynamicBlock:hover {
-    background-color: #fff9f9;
-    color: #191414;
-}
-
-.details {
-    word-wrap: break-word;
 }

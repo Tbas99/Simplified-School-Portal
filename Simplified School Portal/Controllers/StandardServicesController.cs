@@ -50,7 +50,7 @@ namespace Simplified_School_Portal.Controllers
             return View();
         }
 
-        public async Task<ActionResult> Canvas()
+        public ActionResult Canvas()
         {
             return View();
         }

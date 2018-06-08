@@ -33,10 +33,8 @@ namespace Simplified_School_Portal_Tests
             // Act
             try
             {
-                context.Database.Connection.Open();
                 repo.InsertPackage_call(call);
                 repo.Save();
-                context.Database.Connection.Close();
             }
             catch (Exception e)
             {

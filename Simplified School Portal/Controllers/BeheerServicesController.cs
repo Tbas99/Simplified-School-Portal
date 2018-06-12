@@ -257,7 +257,6 @@ namespace Simplified_School_Portal.Controllers
             var response = await client.GetAsync(callUrl);
             var data = JObject.Parse(await response.Content.ReadAsStringAsync());
 
-            /*
             // If user wants data from a key that isn't nested and easly accesible 
             if (dataSection == "front")
             {
@@ -266,12 +265,44 @@ namespace Simplified_School_Portal.Controllers
             // if it is nested in another key, create an array and get the correct content
             else if (dataSection == "nested")
             {
-                callResult = 
+                var dataArray = (JArray)data["data"];
+
+                foreach (JObject value in dataArray)
+                {
+                    foreach (var property in value.Properties())
+                    {
+                        if (property.Name == desiredContentKey)
+                        {
+                            callResult = (string)property.Value;
+                        }
+                    }
+                }
             }
 
-            string callResult = (string)data[desiredContentKey];
-            */
             return callResult;
+        }
+
+        public async Task<string> startCallProcedure(string content)
+        {
+            string apiCallContent = "";
+
+            // Get the properties of the call
+            foreach (Package_call call in unitOfWork.Package_callRepository.dbSet.ToList())
+            {
+                if (call.Call == content)
+                {
+                    apiCallContent = await apiCall(call.Call_url, "front", "total_pages");
+                }
+            }
+
+            if (apiCallContent == "")
+            {
+                return await Task.FromResult(content);
+            }
+            else
+            {
+                return await Task.FromResult(apiCallContent);
+            }
         }
 
         public string extractCorrectHtmlOutput(IEnumerable<Position> positions)

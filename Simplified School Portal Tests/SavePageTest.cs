@@ -91,9 +91,9 @@ namespace Simplified_School_Portal_Tests
             string exceptionMessage = "";
             string expectedOutput = "<div class=\"row\"><div class=\"col-md-5 dynamicBlock\"><p></p></div><div class=\"col-md-5 col-md-offset-2 dynamicBlock\"><p>Callresults1</p></div></div>";
             string realOutput = "";
-            List<Position> positions = new List<Position>();
+            List<Positionmodel> positions = new List<Positionmodel>();
 
-            Position position = new Position();
+            Positionmodel position = new Positionmodel();
             position.y = "0";
             position.x = "6";
             position.w = "3";
@@ -125,9 +125,9 @@ namespace Simplified_School_Portal_Tests
             string exceptionMessage = "";
             string expectedOutput = "<div class=\"row\"><div class=\"col-md-5 dynamicBlock\"><p></p></div><div class=\"col-md-5 col-md-offset-2 dynamicBlock\"><p></p></div></div><div class=\"row\"><div class=\"col-md-5 dynamicBlock\"><p>Callresults2</p></div><div class=\"col-md-5 col-md-offset-2 dynamicBlock\"><p></p></div></div>";
             string realOutput = "";
-            List<Position> positions = new List<Position>();
+            List<Positionmodel> positions = new List<Positionmodel>();
 
-            Position position = new Position();
+            Positionmodel position = new Positionmodel();
             position.y = "2";
             position.x = "0";
             position.w = "3";

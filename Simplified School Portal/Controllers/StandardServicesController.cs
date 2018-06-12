@@ -67,7 +67,7 @@ namespace Simplified_School_Portal.Controllers
                 return Redirect(host + "?client_id=i387766-simplified&scope=fhict fhict_personal openid profile email roles&response_type=code&redirect_uri=" + HttpUtility.HtmlEncode("https://localhost:44363/StandardServices/Callback"));
             }
 
-            List<Course> courses = new List<Course>();
+            List<Coursemodel> courses = new List<Coursemodel>();
 
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
@@ -84,7 +84,7 @@ namespace Simplified_School_Portal.Controllers
 
             foreach (JObject date in dataArray)
             {
-                Course course = new Course();
+                Coursemodel course = new Coursemodel();
 
                 // add all properties to fill the model
                 foreach (var property in date.Properties())

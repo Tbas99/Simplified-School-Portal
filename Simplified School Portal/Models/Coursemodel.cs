@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Simplified_School_Portal.Models
 {
-    public class Course
+    public class Coursemodel
     {
         public string room { get; set; }
         public string subject { get; set; }

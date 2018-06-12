@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Simplified_School_Portal.Models
 {
-    public class Position
+    public class Positionmodel
     {
         public string x { get; set; }
         public string y { get; set; }

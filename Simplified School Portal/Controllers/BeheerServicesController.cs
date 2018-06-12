@@ -145,7 +145,7 @@ namespace Simplified_School_Portal.Controllers
         }
 
         [HttpPost]
-        public ActionResult savePage(IEnumerable<Position> positions)
+        public ActionResult savePage(IEnumerable<Positionmodel> positions)
         {
             int rowcount = unitOfWork.PagesRepository.dbSet.Count();
             rowcount++;
@@ -305,16 +305,16 @@ namespace Simplified_School_Portal.Controllers
             }
         }
 
-        public string extractCorrectHtmlOutput(IEnumerable<Position> positions)
+        public string extractCorrectHtmlOutput(IEnumerable<Positionmodel> positions)
         {
             // Variable to check (highest) row position
             int highestY = 0;
 
             // First order the list
-            List<Position> orderedPositions = positions.OrderBy(o => o.y).ThenBy(o => o.x).ToList();
+            List<Positionmodel> orderedPositions = positions.OrderBy(o => o.y).ThenBy(o => o.x).ToList();
 
             // Determine last position
-            Position lastPosition = new Position();
+            Positionmodel lastPosition = new Positionmodel();
 
             // Variables to calculate rows.
             int rows = 0;
@@ -336,7 +336,7 @@ namespace Simplified_School_Portal.Controllers
             // Sort incoming content based on x and y positions
 
             // Check how many rows the page contains
-            foreach (Position p in orderedPositions)
+            foreach (Positionmodel p in orderedPositions)
             {
                 int y = Convert.ToInt16(p.y);
 
@@ -363,7 +363,7 @@ namespace Simplified_School_Portal.Controllers
                 nextRowNumber += 2;
             }
 
-            foreach (Position p in orderedPositions)
+            foreach (Positionmodel p in orderedPositions)
             {
                 // Convert the variables first
                 int y = Convert.ToInt16(p.y);

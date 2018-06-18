@@ -43,6 +43,25 @@
         Text = "POST",
         Value = "POST"
     });
+
+    List<SelectListItem> call_data_section_options = new List<SelectListItem>();
+    call_data_section_options.Add(new SelectListItem
+    {
+        Text = "Data section: Select front if the desired key isn't in a JSON array, if it is select nested",
+        Value = "",
+        Disabled = true,
+        Selected = true
+    });
+    call_data_section_options.Add(new SelectListItem
+    {
+        Text = "Front",
+        Value = "front"
+    });
+    call_data_section_options.Add(new SelectListItem
+    {
+        Text = "Nested",
+        Value = "nested"
+    });
 }
 
 @using (Html.BeginForm("_APIcallPartial", "BeheerServices", FormMethod.Post, new { @class = "col-md-4 col-md-offset-4 go-right formTweaks" }))
@@ -63,6 +82,15 @@
     <div class="form-group">
         @Html.TextBoxFor(m => m.call_url, new { @class = "form-control", @id = "callUrl", @name = "callUrl", @type = "url", @required = "required" })
         <label for="callUrl">The URL of the call</label>
+    </div>
+
+    <div class="form-group">
+        @Html.TextBoxFor(m => m.call_content_key, new { @class = "form-control", @id = "callKey", @name = "callKey", @type = "text", @required = "required" })
+        <label for="callKey">Data key </label>
+    </div>
+
+    <div class="form-group">
+        @Html.DropDownListFor(m => m.call_data_section, call_data_section_options, new { @class = "form-control selectorBoxes", @id = "call_data_section", @required = "required" })
     </div>
 
     <div class="form-group">

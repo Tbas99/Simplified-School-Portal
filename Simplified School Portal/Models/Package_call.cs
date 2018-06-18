@@ -25,6 +25,8 @@ namespace Simplified_School_Portal.Models
         public string Call_url { get; set; }
         public string Call_verificationNeeded { get; set; }
         public string Call_type { get; set; }
+        public string Call_data_section { get; set; }
+        public string Call_content_key { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<API_package> API_package { get; set; }

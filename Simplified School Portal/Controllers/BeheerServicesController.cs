@@ -74,7 +74,7 @@ namespace Simplified_School_Portal.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult NewService(APImodel m, IEnumerable<int> SelectedCalls)
+        public ActionResult NewService(APImodel apimodel, IEnumerable<int> SelectedCalls)
         {
             if (SelectedCalls == null)
             {
@@ -84,9 +84,9 @@ namespace Simplified_School_Portal.Controllers
             else
             {
                 API_package package = new API_package();
-                package.Package_name = m.package_name;
-                package.Package_description = m.package_descr;
-                package.Package_url = m.package_url;
+                package.Package_name = apimodel.package_name;
+                package.Package_description = apimodel.package_descr;
+                package.Package_url = apimodel.package_url;
 
                 // Search for calls
                 foreach (Package_call call in unitOfWork.Package_callRepository.dbSet.ToList())
@@ -116,13 +116,15 @@ namespace Simplified_School_Portal.Controllers
         }
 
         [HttpPost]
-        public ActionResult _APIcallPartial(Callmodel a)
+        public ActionResult _APIcallPartial(Callmodel callmodel)
         {
             Package_call call = new Package_call();
-            call.Call = a.call;
-            call.Call_url = a.call_url;
-            call.Call_verificationNeeded = a.call_auth_needed;
-            call.Call_type = a.call_type;
+            call.Call = callmodel.call;
+            call.Call_url = callmodel.call_url;
+            call.Call_verificationNeeded = callmodel.call_auth_needed;
+            call.Call_type = callmodel.call_type;
+            call.Call_data_section = callmodel.call_data_section;
+            call.Call_content_key = callmodel.call_content_key;
 
             // Finally add it to the db
             unitOfWork.Package_callRepository.Insert(call);
@@ -276,20 +278,8 @@ namespace Simplified_School_Portal.Controllers
             // if it is nested in another key, create an array and get the correct content
             else if (dataSection == "nested")
             {
-                var dataArray = (JArray)data["data"];
-
-                foreach (JObject value in dataArray)
-                {
-                    foreach (var property in value.Properties())
-                    {
-                        if (property.Name == desiredContentKey)
-                        {
-                            callResult = (string)property.Value;
-                        }
-                    }
-                }
+                callResult = (string)data.SelectToken("data." + desiredContentKey);
             }
-
             return callResult;
         }
 
@@ -305,7 +295,10 @@ namespace Simplified_School_Portal.Controllers
             {
                 if (call.Call == formattedContent)
                 {
-                    apiCallContent = Task.Run(async () => { return await apiCall(call.Call_url, "front", "total_pages"); }).Result;
+                    if (call.Call_content_key.Length > 0 || call.Call_data_section.Length > 0)
+                    {
+                        apiCallContent = Task.Run(async () => { return await apiCall(call.Call_url, call.Call_data_section, call.Call_content_key); }).Result;
+                    }
                 }
             }
 

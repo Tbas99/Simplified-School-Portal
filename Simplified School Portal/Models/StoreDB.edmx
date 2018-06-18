@@ -61,6 +61,8 @@ warning 6002: The table/view 'C:\USERS\TOBIAS\SOURCE\REPOS\SIMPLIFIED-SCHOOL-POR
           <Property Name="Call_url" Type="text" />
           <Property Name="Call_verificationNeeded" Type="text" />
           <Property Name="Call_type" Type="text" Nullable="false" />
+          <Property Name="Call_data_section" Type="text" />
+          <Property Name="Call_content_key" Type="text" />
         </EntityType>
         <EntityType Name="Pages">
           <Key>
@@ -225,6 +227,8 @@ warning 6002: The table/view 'C:\USERS\TOBIAS\SOURCE\REPOS\SIMPLIFIED-SCHOOL-POR
           <Property Name="Call_verificationNeeded" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Call_type" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="API_package" Relationship="SSPDatabaseModel.Mapping_package_call" FromRole="Package_call" ToRole="API_package" />
+          <Property Name="Call_data_section" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Call_content_key" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Request">
           <Key>
@@ -325,6 +329,8 @@ warning 6002: The table/view 'C:\USERS\TOBIAS\SOURCE\REPOS\SIMPLIFIED-SCHOOL-POR
           <EntitySetMapping Name="Package_call">
             <EntityTypeMapping TypeName="SSPDatabaseModel.Package_call">
               <MappingFragment StoreEntitySet="Package_call">
+                <ScalarProperty Name="Call_content_key" ColumnName="Call_content_key" />
+                <ScalarProperty Name="Call_data_section" ColumnName="Call_data_section" />
                 <ScalarProperty Name="Call_type" ColumnName="Call_type" />
                 <ScalarProperty Name="Call_verificationNeeded" ColumnName="Call_verificationNeeded" />
                 <ScalarProperty Name="Call_url" ColumnName="Call_url" />

@@ -163,7 +163,10 @@ namespace Simplified_School_Portal.Controllers
 
         public ActionResult SetActivePage()
         {
-            return View(unitOfWork.PagesRepository.dbSet.ToList());
+            List<Pages> unsortedlist = unitOfWork.PagesRepository.dbSet.ToList();
+            List<Pages> sortedlist = unsortedlist.OrderBy(page => int.Parse(page.Title.Substring(6))).ToList();
+
+            return View(sortedlist);
         }
 
         [HttpPost]
@@ -255,7 +258,15 @@ namespace Simplified_School_Portal.Controllers
             var client = new HttpClient();
 
             var response = await client.GetAsync(callUrl);
-            var data = JObject.Parse(await response.Content.ReadAsStringAsync());
+            JObject data = new JObject();
+            try
+            {
+                data = JObject.Parse(await response.Content.ReadAsStringAsync());
+            }
+            catch
+            {
+                return callResult;
+            }
 
             // If user wants data from a key that isn't nested and easly accesible 
             if (dataSection == "front")
@@ -282,26 +293,29 @@ namespace Simplified_School_Portal.Controllers
             return callResult;
         }
 
-        public async Task<string> startCallProcedure(string content)
+        public string startCallProcedure(string content)
         {
             string apiCallContent = "";
+
+            // First strip the unncessary html code from the given content
+            string formattedContent = formatContent(content);
 
             // Get the properties of the call
             foreach (Package_call call in unitOfWork.Package_callRepository.dbSet.ToList())
             {
-                if (call.Call == content)
+                if (call.Call == formattedContent)
                 {
-                    apiCallContent = await apiCall(call.Call_url, "front", "total_pages");
+                    apiCallContent = Task.Run(async () => { return await apiCall(call.Call_url, "front", "total_pages"); }).Result;
                 }
             }
 
-            if (apiCallContent == "")
+            if (apiCallContent == "" || apiCallContent == null)
             {
-                return await Task.FromResult(content);
+                return formattedContent;
             }
             else
             {
-                return await Task.FromResult(apiCallContent);
+                return apiCallContent;
             }
         }
 
@@ -327,11 +341,6 @@ namespace Simplified_School_Portal.Controllers
             string totalHtmlContent = "";
             string htmlContentLeft = "";
             string htmlContentRight = "";
-
-            // htmlTemplates
-            string rowContentLeft = "";
-            string rowContentRight = "";
-            string newRow = "";
 
             // Sort incoming content based on x and y positions
 
@@ -375,27 +384,18 @@ namespace Simplified_School_Portal.Controllers
                     if (x < 3)
                     {
                         // Position left
-                        string content = p.content.Replace("\n", "");
-                        content = content.Replace("<div>", "");
-                        content = content.Replace("</div>", "");
-                        htmlContentLeft = content;
+                        htmlContentLeft = startCallProcedure(p.content);
 
                     }
                     else if (x > 3)
                     {
                         // Position right
-                        string content = p.content.Replace("\n", "");
-                        content = content.Replace("<div>", "");
-                        content = content.Replace("</div>", "");
-                        htmlContentRight = content;
+                        htmlContentRight = startCallProcedure(p.content);
 
                         if (Convert.ToInt16(lastPosition.x) < 3)
                         {
                             // append html row
-                            rowContentLeft = "<div class=\"col-md-5 dynamicBlock\"><p>" + htmlContentLeft + "</p></div>";
-                            rowContentRight = "<div class=\"col-md-5 col-md-offset-2 dynamicBlock\"><p>" + htmlContentRight + "</p></div>";
-                            newRow = "<div class=\"row\">" + rowContentLeft + rowContentRight + "</div>";
-                            totalHtmlContent += newRow;
+                            totalHtmlContent += appendRow(htmlContentLeft, htmlContentRight);
                             lastRow++;
 
                             // clean the rows
@@ -406,10 +406,7 @@ namespace Simplified_School_Portal.Controllers
                         else if (Convert.ToInt16(lastPosition.x) > 3)
                         {
                             // append html row
-                            rowContentLeft = "<div class=\"col-md-5 dynamicBlock\"><p>" + htmlContentLeft + "</p></div>";
-                            rowContentRight = "<div class=\"col-md-5 col-md-offset-2 dynamicBlock\"><p>" + htmlContentRight + "</p></div>";
-                            newRow = "<div class=\"row\">" + rowContentLeft + rowContentRight + "</div>";
-                            totalHtmlContent += newRow;
+                            totalHtmlContent += appendRow(htmlContentLeft, htmlContentRight);
                             lastRow++;
 
                             // clean the rows
@@ -425,10 +422,7 @@ namespace Simplified_School_Portal.Controllers
                 else
                 {
                     // append html row
-                    rowContentLeft = "<div class=\"col-md-5 dynamicBlock\"><p>" + htmlContentLeft + "</p></div>";
-                    rowContentRight = "<div class=\"col-md-5 col-md-offset-2 dynamicBlock\"><p>" + htmlContentRight + "</p></div>";
-                    newRow = "<div class=\"row\">" + rowContentLeft + rowContentRight + "</div>";
-                    totalHtmlContent += newRow;
+                    totalHtmlContent += appendRow(htmlContentLeft, htmlContentRight);
                     lastRow++;
 
                     // clean the rows
@@ -439,16 +433,10 @@ namespace Simplified_School_Portal.Controllers
                     if (x < 3)
                     {
                         // Position left
-                        string content = p.content.Replace("\n", "");
-                        content = content.Replace("<div>", "");
-                        content = content.Replace("</div>", "");
-                        htmlContentLeft = content;
+                        htmlContentLeft = startCallProcedure(p.content);
 
                         // append html row
-                        rowContentLeft = "<div class=\"col-md-5 dynamicBlock\"><p>" + htmlContentLeft + "</p></div>";
-                        rowContentRight = "<div class=\"col-md-5 col-md-offset-2 dynamicBlock\"><p>" + htmlContentRight + "</p></div>";
-                        newRow = "<div class=\"row\">" + rowContentLeft + rowContentRight + "</div>";
-                        totalHtmlContent += newRow;
+                        totalHtmlContent += appendRow(htmlContentLeft, htmlContentRight);
                         lastRow++;
 
                         // clean the rows
@@ -458,16 +446,10 @@ namespace Simplified_School_Portal.Controllers
                     else if (x > 3)
                     {
                         // Position right
-                        string content = p.content.Replace("\n", "");
-                        content = content.Replace("<div>", "");
-                        content = content.Replace("</div>", "");
-                        htmlContentRight = content;
+                        htmlContentRight = startCallProcedure(p.content);
 
                         // append html row
-                        rowContentLeft = "<div class=\"col-md-5 dynamicBlock\"><p>" + htmlContentLeft + "</p></div>";
-                        rowContentRight = "<div class=\"col-md-5 col-md-offset-2 dynamicBlock\"><p>" + htmlContentRight + "</p></div>";
-                        newRow = "<div class=\"row\">" + rowContentLeft + rowContentRight + "</div>";
-                        totalHtmlContent += newRow;
+                        totalHtmlContent += appendRow(htmlContentLeft, htmlContentRight);
                         lastRow++;
 
                         // clean the rows
@@ -481,6 +463,23 @@ namespace Simplified_School_Portal.Controllers
             }
 
             return totalHtmlContent;
+        }
+
+        // Functions to handle page saving
+        private string formatContent(string content)
+        {
+            string formattedContent = content.Replace("\n", "").Replace("<div>", "").Replace("</div>", "");
+
+            return formattedContent;
+        }
+
+        private string appendRow(string leftPageContent, string rightPageContent)
+        {
+            string rowContentLeft = "<div class=\"col-md-5 dynamicBlock\"><p>" + leftPageContent + "</p></div>";
+            string rowContentRight = "<div class=\"col-md-5 col-md-offset-2 dynamicBlock\"><p>" + rightPageContent + "</p></div>";
+            string totalRowContent = "<div class=\"row\">" + rowContentLeft + rowContentRight + "</div>";
+
+            return totalRowContent;
         }
     }
 }
